@@ -23,10 +23,10 @@ describe('dataService', () => {
       const buffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
 
       // Mock fetch
-      global.fetch = vi.fn().mockResolvedValue({
+      globalThis.fetch = vi.fn().mockResolvedValue({
         ok: true,
         arrayBuffer: async () => buffer,
-      });
+      }) as any;
 
       const teams = await loadLeagueData('dub');
 
@@ -37,10 +37,10 @@ describe('dataService', () => {
 
     it('handles file not found error', async () => {
       // Mock fetch to return 404
-      global.fetch = vi.fn().mockResolvedValue({
+      globalThis.fetch = vi.fn().mockResolvedValue({
         ok: false,
         status: 404,
-      });
+      }) as any;
 
       await expect(loadLeagueData('nonexistent')).rejects.toThrow('Failed to load league data');
     });
@@ -56,10 +56,10 @@ describe('dataService', () => {
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
       const buffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
 
-      global.fetch = vi.fn().mockResolvedValue({
+      globalThis.fetch = vi.fn().mockResolvedValue({
         ok: true,
         arrayBuffer: async () => buffer,
-      });
+      }) as any;
 
       await loadLeagueData('test-league');
 
