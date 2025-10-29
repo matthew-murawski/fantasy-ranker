@@ -1,0 +1,20 @@
+.container {
+  /* Container for all roster sections */
+}
+
+.section {
+  margin-top: 16px;
+}
+
+.section:first-child {
+  margin-top: 0;
+}
+
+.sectionHeader {
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-size: 16px;
+  margin-top: 0;
+}
