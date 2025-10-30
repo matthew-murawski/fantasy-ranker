@@ -47,6 +47,11 @@ function ComparisonScreen({
 
   return (
     <div className={styles.container}>
+      {/* Progress bar at top - sticky */}
+      <div className={styles.progressContainer}>
+        <ProgressBar completed={progress.completed} total={progress.estimated} />
+      </div>
+
       {/* View toggle buttons - top left */}
       <div className={styles.viewToggle}>
         <button
@@ -94,11 +99,6 @@ function ComparisonScreen({
             showViewToggle={false}
           />
         </div>
-      </div>
-
-      {/* Progress bar at bottom */}
-      <div className={styles.progressContainer}>
-        <ProgressBar completed={progress.completed} total={progress.estimated} />
       </div>
     </div>
   );

@@ -79,16 +79,24 @@
   margin-bottom: var(--spacing-md);
 }
 
-/* Progress bar at bottom */
+/* Progress bar at top - sticky */
 .progressContainer {
-  margin-top: var(--spacing-md);
-  padding: 0 var(--spacing-md);
+  position: sticky;
+  top: 0;
+  background: var(--color-bg-primary);
+  padding: var(--spacing-md) 0;
   margin-bottom: var(--spacing-md);
+  z-index: 10;
 }
 
 @media (max-width: 768px) {
   .container {
     padding: var(--spacing-sm);
+  }
+
+  .progressContainer {
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-sm);
   }
 
   .rosterContainer {
