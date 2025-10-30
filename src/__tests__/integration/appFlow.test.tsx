@@ -18,6 +18,11 @@ describe('App Integration Flow', () => {
 
     const { container } = render(<App />);
 
+    // Wait for landing page, then start
+    await screen.findByRole('heading', { name: /dub fantasy ranker/i });
+    const startButton = await screen.findByRole('button', { name: /start/i });
+    await user.click(startButton);
+
     // Wait for the comparison screen instruction to appear
     await screen.findByText(/click or use arrow keys to choose the best team/i);
 
@@ -49,6 +54,5 @@ describe('App Integration Flow', () => {
     // Ensure no residual progress bar in DOM
     const progressBar = container.querySelector('[class*="progressContainer"]');
     expect(progressBar).toBeFalsy();
-  });
+  }, 15000);
 });
-

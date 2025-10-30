@@ -27,18 +27,29 @@ describe('App', () => {
     expect(screen.getByText(/loading league data/i)).toBeInTheDocument();
   });
 
-  it('shows teams when data loads successfully and renders ComparisonFlow', async () => {
+  it('shows landing page after data loads, then starts comparison on click', async () => {
     const teams = mockLeagueData();
     (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(teams);
 
     render(<App />);
 
-    // Should render comparison instruction after data load
+    // Landing page should appear after data load
     await waitFor(() => {
       expect(
-        screen.getByText(/click or use arrow keys to choose the best team/i)
+        screen.getByRole('heading', { name: /dub fantasy ranker/i })
       ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /start/i })).toBeInTheDocument();
     });
+
+    // Start the flow
+    await (await import('@testing-library/user-event')).default.setup().click(
+      screen.getByRole('button', { name: /start/i })
+    );
+
+    // Should render comparison instruction after starting
+    expect(
+      await screen.findByText(/click or use arrow keys to choose the best team/i)
+    ).toBeInTheDocument();
 
     // Verify loadLeagueData called with 'dub'
     expect(loadLeagueData).toHaveBeenCalledWith('dub');
