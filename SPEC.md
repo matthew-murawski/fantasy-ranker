@@ -1,137 +1,255 @@
-Spacing System
-We'll use a consistent scale based on multiples of 4px. This creates visual rhythm and makes everything feel cohesive.
-Spacing Scale:
+Swiss System Ranking Algorithm Specification
+Overview
+Replace the current quicksort-based comparison algorithm with a Swiss System tournament approach to reduce comparisons from ~40 to ~20-25 for 12 teams while maintaining reasonable ranking accuracy.
+Algorithm Structure
+Phase 1: Swiss Rounds (3 rounds)
+The algorithm runs exactly 3 rounds of Swiss-style pairings. Each round consists of 6 head-to-head matchups (for 12 teams), resulting in 18 total comparisons.
+Round 1 pairings:
 
-xs: 4px
-sm: 8px
-md: 16px
-lg: 24px
-xl: 32px
-2xl: 48px
+All teams start with a 0-0 record
+Pair teams randomly or by their order in the input file
+Create 6 matchups (teams 1v2, 3v4, 5v6, 7v8, 9v10, 11v12)
 
-Application:
+Round 2 pairings:
 
-Space between player cards: 12px (3 × 4px)
-Padding inside player cards: 16px horizontal, 12px vertical
-Space between the two comparison panels: 24px
-Margin around section headers: 8px bottom
-Panel padding (overall container): 24px
-Space between position badge and player name: 8px
+Group teams by their current record (1-0 or 0-1)
+Within each record group, pair teams that haven't faced each other yet
+If odd number in a group, pair the remaining team with someone from an adjacent record group
+Avoid rematches whenever possible
 
-Component Specifications
-Player Cards:
+Round 3 pairings:
 
-Background: #1e2128
-Border: 1px solid #2a2e37 (very subtle)
-Border radius: 8px
-Padding: 16px horizontal, 12px vertical
-Hover state: Background lightens slightly to #252930, transition 0.2s ease
-Layout: Flexbox with position badge on left, player info in middle, stats on right
+Group teams by current record (2-0, 1-1, 0-2)
+Pair teams within their record groups
+Continue avoiding rematches
+Handle odd-sized groups by pairing with adjacent records
 
-Position Badges:
+Data tracking during Swiss rounds:
 
-Size: 40px × 32px (compact rounded rectangle)
-Border radius: 6px
-Background: Use the position colors we defined, but at 20% opacity
-Border: 1px solid of the same position color at full opacity
-Text: Position abbreviation (QB, RB, etc.), 12px, weight 600, uppercase, color matching the border
-Alignment: Centered both vertically and horizontally
+Store each team's win-loss record (W-L)
+Store which teams have faced each other (to avoid rematches)
+Store the identity of each opponent faced (for tiebreaker calculations)
 
-Comparison Panels:
+Phase 2: Tiebreaker Pass
+After 3 Swiss rounds, teams are grouped by their final records. Within each record group that contains multiple teams, apply tiebreakers to establish final ranking order.
+Tiebreaker priority (in order):
 
-Background: #1e2128
-Border radius: 12px
-Padding: 24px
-Width: Each panel takes 50% of available space minus gap
-Gap between panels: 24px
-Shadow: Optional subtle shadow 0 4px 6px rgba(0, 0, 0, 0.3) for depth
+Head-to-head result: If two tied teams faced each other during Swiss rounds, the winner of that matchup ranks higher
+Strength of schedule: Calculate each team's opponents' combined win percentages. Team with tougher schedule ranks higher
+Additional comparison: If teams are still tied and strength of schedule is equal (or very close), ask the user for one direct comparison between the two teams
 
-Buttons (Arrow buttons for choosing teams):
+Tiebreaker process:
 
-Background: #00d4aa (teal accent)
-Padding: 16px horizontal, 12px vertical
-Border radius: 8px
-Text: 15px, weight 600, color #0f1419 (dark, for contrast against teal)
-Hover state: Background lightens to #00e6bd, transition 0.2s ease
-Border: none
-Min-width: 120px
+Sort teams into record groups (e.g., all 2-1 teams together, all 1-2 teams together)
+For each group with 2+ teams:
 
-Progress Bar:
+Apply head-to-head tiebreaker if applicable
+Apply strength of schedule for remaining ties
+If still tied, queue a comparison between those specific teams
 
-Container background: #1e2128
-Fill color: #00d4aa (teal accent)
-Height: 8px
-Border radius: 4px
-Transition: width 0.3s ease
 
-Section Headers (STARTERS, BENCH, IR):
+Present any queued tiebreaker comparisons to the user (estimated 3-6 additional comparisons for 12 teams)
 
-Text: 14px, weight 600, uppercase, letter-spacing 0.05em
-Color: #9ca3af
-Margin bottom: 12px
-Optional: thin border-bottom 1px solid #2a2e37 with 8px padding-bottom
+User Experience Flow
+Comparison Screen Updates
+Progress tracking:
 
-View Toggle Buttons (Starters/Bench vs By Position):
+Total estimated comparisons: 18 (Swiss rounds) + estimated tiebreakers (3-6)
+Display current round: "Round 1 of 3", "Round 2 of 3", "Round 3 of 3", "Tiebreakers"
+Show current matchup number within round: "Matchup 4 of 6"
+Progress bar shows: (comparisons completed / total estimated comparisons)
 
-Background inactive: transparent
-Background active: #2a2e37
-Text: 14px, weight 500
-Color inactive: #6b7280
-Color active: #e8eaed
-Padding: 8px 16px
-Border radius: 6px
-Border: 1px solid #2a2e37
-Transition: all 0.2s ease
+Round transition:
 
-Team Name Headers (on rankings screen):
+After completing all 6 matchups in a round, show a brief transition message:
 
-Text: 18px, weight 600
-Color: #e8eaed
-Expandable cards should have a subtle hover state (background #252930)
+"Round 1 complete! Starting Round 2..."
+Display for 1-2 seconds, then proceed to next round
+No user action required
 
-Injury Status Indicators:
 
-IR badge: Small pill shape, background #ef4444 at 20% opacity, border 1px solid #ef4444, text "IR" in #ef4444
-Size: Auto-width with 6px horizontal padding, 4px vertical padding, 4px border radius
-Position: Next to player name
 
-Layout Structure
-Comparison Screen:
+Tiebreaker phase:
 
-Max width: 1400px centered
-Two columns (panels) with 24px gap
-Progress bar at top with 32px margin-bottom
-Instructions/header text centered above panels
+After Round 3 completes, show message: "Swiss rounds complete! Resolving ties..."
+If tiebreaker comparisons are needed, present them with context:
 
-Rankings Screen:
+"These teams have identical records. Which roster is stronger?"
+Show both teams' records beneath their rosters
 
-Max width: 800px centered (narrower, single column)
-Team cards stack vertically with 16px gap
-Each card expands on click to show full roster
 
-Responsive Behavior:
+If no tiebreaker comparisons needed (all ties resolved by head-to-head or strength of schedule), proceed directly to rankings
 
-On screens below 768px width, comparison panels stack vertically
-Gap between stacked panels: 24px
-Font sizes remain the same (readable on mobile)
-Padding reduces slightly: panels go to 16px instead of 24px
+Visual Indicators
 
-Interactive States & Accessibility
-Focus Indicators:
+Keep the existing side-by-side roster comparison layout
+Add round/matchup indicators above or below the progress bar
+Maintain all existing UI elements (arrow buttons, keyboard controls, view toggles)
 
-All interactive elements get a 2px solid outline in #00d4aa when focused
-Outline offset: 2px
-Applied to buttons, clickable cards, toggle buttons
+Technical Implementation Notes
+Data Structures
+typescriptinterface TeamRecord {
+  teamId: string;
+  wins: number;
+  losses: number;
+  opponentsPlayed: string[]; // teamIds of opponents faced
+}
 
-Keyboard Navigation:
+interface Matchup {
+  round: number;
+  matchupNumber: number;
+  team1Id: string;
+  team2Id: string;
+}
 
-Left/Right arrow keys already work for team selection
-Tab order should flow logically through interactive elements
-Enter key should work on focused buttons
+interface ComparisonResult {
+  winnerId: string;
+  loserId: string;
+  round: number;
+}
+```
 
-Animations:
+### Swiss Pairing Algorithm
+```
+function pairRound(teams: TeamRecord[], round: number, pastMatchups: ComparisonResult[]): Matchup[] {
+  // Group teams by current record
+  const recordGroups = groupByRecord(teams);
+  
+  // Sort groups by record (best records first)
+  const sortedGroups = sortGroupsByRecord(recordGroups);
+  
+  const matchups: Matchup[] = [];
+  let unpaired: TeamRecord[] = [];
+  
+  for (const group of sortedGroups) {
+    // Add any unpaired team from previous group
+    const teamsTopair = [...unpaired, ...group];
+    unpaired = [];
+    
+    // If odd number, save one for next group
+    if (teamsTopair.length % 2 === 1) {
+      unpaired.push(teamsToair.pop());
+    }
+    
+    // Pair remaining teams, avoiding rematches
+    const groupMatchups = pairWithinGroup(teamsToair, pastMatchups);
+    matchups.push(...groupMatchups);
+  }
+  
+  // Handle any final unpaired team (pair with closest record available)
+  if (unpaired.length > 0) {
+    // Pair with any team that hasn't faced them yet
+  }
+  
+  return matchups;
+}
+```
 
-Keep transitions subtle: 0.2s ease for most state changes
-Progress bar fills smoothly: 0.3s ease
-Card expansions: 0.25s ease
-No animations that could cause motion sickness (no spinning, excessive movement)
+### Tiebreaker Calculation
+```
+function calculateStrengthOfSchedule(team: TeamRecord, allRecords: TeamRecord[]): number {
+  let totalOpponentWins = 0;
+  let totalOpponentGames = 0;
+  
+  for (const opponentId of team.opponentsPlayed) {
+    const opponent = allRecords.find(t => t.teamId === opponentId);
+    totalOpponentWins += opponent.wins;
+    totalOpponentGames += (opponent.wins + opponent.losses);
+  }
+  
+  return totalOpponentGames > 0 ? totalOpponentWins / totalOpponentGames : 0;
+}
+
+function resolveTies(recordGroup: TeamRecord[], pastMatchups: ComparisonResult[]): {
+  sorted: TeamRecord[],
+  additionalComparisonsNeeded: Matchup[]
+} {
+  // Apply tiebreakers in order:
+  // 1. Head-to-head results
+  // 2. Strength of schedule
+  // 3. Queue additional comparison if still tied
+  
+  // Return sorted teams within this record group
+  // and any additional matchups that need user input
+}
+State Management Updates
+The existing comparison engine state should be extended:
+typescriptinterface SwissSystemState {
+  currentRound: number; // 1, 2, 3, or 4 (4 = tiebreaker phase)
+  currentMatchupInRound: number;
+  matchupsThisRound: Matchup[];
+  teamRecords: TeamRecord[];
+  completedMatchups: ComparisonResult[];
+  tiebreakerQueue: Matchup[];
+  phase: 'swiss' | 'tiebreaker' | 'complete';
+}
+Validation and Edge Cases
+Bye handling:
+
+If pairing algorithm cannot find a valid pairing without a rematch and only one team is unpaired, that team receives a "bye" (automatic win) for that round
+Byes should be rare with 12 teams and 3 rounds, but the algorithm should handle them gracefully
+
+Equal strength of schedule:
+
+If two teams have identical records and strength of schedule differs by less than 0.01 (essentially equal), queue an additional comparison rather than making an arbitrary decision
+
+Final ranking output:
+
+Teams are ranked first by record (3-0 > 2-1 > 1-2 > 0-3)
+Within each record group, teams are ordered by tiebreaker results
+The final ranking should be a complete 1-12 ordered list with no ties
+
+Testing Considerations
+
+Test with 12 teams across all three rounds
+Verify pairing logic avoids rematches in rounds 2 and 3
+Test tiebreaker logic with various record distributions:
+
+All teams finish with different records (best case, no tiebreakers needed)
+Multiple teams tied at 2-1 (typical case, some tiebreakers needed)
+Extreme case: many teams tied at 1-2 (most tiebreakers needed)
+
+
+Verify progress bar accurately reflects total comparisons
+Test edge case: team receives bye (though unlikely with 12 teams)
+
+Migration from Quicksort
+Code to replace:
+
+Remove quicksort-based comparison engine
+Remove partition logic and recursive sorting
+Keep comparison result caching (still useful for detecting rematches and head-to-head tiebreakers)
+
+Code to keep:
+
+Comparison UI components (side-by-side roster display, arrow buttons, keyboard controls)
+Progress tracking UI framework (update calculation logic only)
+Rankings display screen (no changes needed)
+Data loading and validation (no changes needed)
+
+New code to add:
+
+Swiss pairing algorithm
+Round management state
+Tiebreaker calculation logic
+Updated progress estimation (18 + estimated tiebreakers)
+
+Expected Outcomes
+Comparison count:
+
+Minimum: 18 (if all teams finish with unique records via tiebreakers that don't require comparisons)
+Typical: 21-24 (18 Swiss + 3-6 tiebreaker comparisons)
+Maximum: ~27 (18 Swiss + up to 9 tiebreaker comparisons if many teams tied and head-to-head doesn't resolve)
+
+Accuracy trade-offs:
+
+Rankings will be less precise than full quicksort for middle-tier teams
+Top-tier and bottom-tier teams will still be clearly identified (teams going 3-0 or 0-3)
+Middle of the pack (1-2 and 2-1 teams) may have some ranking variance compared to a full sort
+This is acceptable for fantasy football power rankings where "approximately correct" is sufficient
+
+User experience improvements:
+
+Roughly 50% fewer comparisons (40 → 21-24)
+Clearer sense of progress with round structure
+Faster completion time encourages more frequent rankings throughout the season
