@@ -37,7 +37,9 @@
   border-radius: 8px;
   min-width: 160px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, opacity 0.3s ease;
+  opacity: 1;
+  animation: fadeIn 0.3s ease;
 }
 
 .startButton:hover {
@@ -54,6 +56,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-lg);
+  animation: fadeIn 0.5s ease;
 }
 
 .leagueTitle {
@@ -72,7 +75,6 @@
 }
 
 .leagueButton {
-  background: var(--color-accent);
   color: var(--color-bg-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
@@ -80,14 +82,44 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .leagueButton:hover {
-  background: var(--color-accent-hover);
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.leagueButton:active {
+  transform: translateY(0);
 }
 
 .leagueButton:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid currentColor;
   outline-offset: 2px;
+}
+
+/* Individual league button colors */
+.leagueButton:nth-child(1) {
+  background: var(--color-ir);
+}
+
+.leagueButton:nth-child(2) {
+  background: var(--color-te);
+}
+
+.leagueButton:nth-child(3) {
+  background: var(--color-dst);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
