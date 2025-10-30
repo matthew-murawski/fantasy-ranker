@@ -1,0 +1,29 @@
+/* ArrowButton - Large clickable arrow for team selection */
+
+.button {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  background: #5E17EB;
+  color: white;
+  font-size: 48px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.button:hover:not(:disabled) {
+  background: #4D12C2;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

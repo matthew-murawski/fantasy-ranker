@@ -1,0 +1,80 @@
+/* ComparisonScreen - Main comparison interface layout */
+
+.container {
+  background: #7B2CBF;
+  min-height: 100vh;
+  padding: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* View toggle buttons in top-left */
+.viewToggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.toggleActive {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #888;
+  color: white;
+  cursor: default;
+  font-size: 14px;
+}
+
+.toggleInactive {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #444;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toggleInactive:hover {
+  background: #555;
+}
+
+/* Two-column roster layout */
+.rosterContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1;
+}
+
+.rosterPanel {
+  flex: 1;
+  max-width: 47%;
+}
+
+/* Selection area at bottom */
+.selectionArea {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.instructionText {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+/* Progress bar at bottom */
+.progressContainer {
+  margin-top: 16px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
