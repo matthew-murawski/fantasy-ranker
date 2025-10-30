@@ -15,10 +15,10 @@ describe('Visual/Accessibility', () => {
   it('theme CSS defines required variables', () => {
     const themePath = path.resolve(__dirname, '../../styles/theme.css');
     const css = fs.readFileSync(themePath, 'utf-8');
-    expect(css).toContain('--color-background: #7B2CBF');
-    expect(css).toContain('--color-card: #666666');
-    expect(css).toContain('--color-text: #FFFFFF');
-    expect(css).toContain('--color-accent: #5E17EB');
+    expect(css).toContain('--color-bg-primary: #0f1419');
+    expect(css).toContain('--color-bg-secondary: #1e2128');
+    expect(css).toContain('--color-text-primary: #e8eaed');
+    expect(css).toContain('--color-accent: #00d4aa');
   });
 
   it('arrow buttons and toggles have aria-labels and are focusable', async () => {

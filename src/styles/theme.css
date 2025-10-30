@@ -1,19 +1,53 @@
 :root {
-  --color-background: #7B2CBF;
-  --color-card: #666666;
-  --color-card-dark: #555555;
-  --color-card-hover: #777777;
-  --color-text: #FFFFFF;
-  --color-text-dim: #CCCCCC;
-  --color-accent: #5E17EB;
-  --color-accent-hover: #4D12C2;
+  /* Colors */
+  --color-bg-primary: #0f1419;
+  --color-bg-secondary: #1e2128;
+  --color-bg-tertiary: #2a2e37;
+  --color-bg-hover: #252930;
+  --color-text-primary: #e8eaed;
+  --color-text-secondary: #9ca3af;
+  --color-text-tertiary: #6b7280;
+  --color-accent: #00d4aa;
+  --color-accent-hover: #00e6bd;
+  --color-border: #2a2e37;
 
+  /* Position badge colors */
+  --color-qb: #fb7185;
+  --color-rb: #34d399;
+  --color-wr: #60a5fa;
+  --color-te: #fbbf24;
+  --color-k: #a78bfa;
+  --color-dst: #fb923c;
+  --color-flex: #94a3b8;
+  --color-bench: #6b7280;
+  --color-ir: #ef4444;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-md: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 32px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.3;
+  --line-height-normal: 1.5;
+
+  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+  --spacing-2xl: 48px;
 
+  /* Border radius */
   --border-radius: 8px;
   --border-radius-sm: 4px;
 }
@@ -24,8 +58,8 @@ html, body, #root {
 
 body {
   margin: 0;
-  background: var(--color-background);
-  color: var(--color-text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
 }
 

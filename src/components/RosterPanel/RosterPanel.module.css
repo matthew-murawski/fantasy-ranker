@@ -1,6 +1,8 @@
 .container {
-  background: transparent;
-  padding: var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .toggleContainer {
@@ -11,28 +13,31 @@
 
 .buttonActive {
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  border: none;
-  background: var(--color-card-hover);
-  color: var(--color-text);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
   cursor: default;
-  font-size: 14px;
-  font-family: sans-serif;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
 }
 
 .buttonInactive {
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  border: none;
-  background: #444;
-  color: var(--color-text-dim);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-tertiary);
   cursor: pointer;
-  font-size: 14px;
-  font-family: sans-serif;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  transition: all 0.2s ease;
 }
 
 .buttonInactive:hover {
-  background: var(--color-card-dark);
+  opacity: 0.8;
 }
 
 .content {
@@ -43,4 +48,10 @@
 .buttonInactive:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-md);
+  }
 }

@@ -11,11 +11,13 @@
 }
 
 .sectionHeader {
-  color: var(--color-text);
-  font-weight: bold;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: var(--spacing-sm);
-  font-size: 16px;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
   margin-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
 }

@@ -48,13 +48,13 @@ describe('PositionGroupedView', () => {
       const team = createMixedTeam();
       render(<PositionGroupedView team={team} />);
 
-      // Should NOT show abbreviated headers
-      expect(screen.queryByText('QB')).not.toBeInTheDocument();
-      expect(screen.queryByText('RB')).not.toBeInTheDocument();
-      expect(screen.queryByText('WR')).not.toBeInTheDocument();
-
-      // Should show full names
+      // Should show full names for section headers (not abbreviations)
       expect(screen.getByText('QUARTERBACKS')).toBeInTheDocument();
+      expect(screen.getByText('RUNNING BACKS')).toBeInTheDocument();
+      expect(screen.getByText('WIDE RECEIVERS')).toBeInTheDocument();
+
+      // Note: Abbreviations like QB, RB, WR will appear in position badges,
+      // but not as section headers
     });
 
     it('keeps D/ST as is', () => {
@@ -71,7 +71,8 @@ describe('PositionGroupedView', () => {
       };
 
       render(<PositionGroupedView team={team} />);
-      expect(screen.getByText('D/ST')).toBeInTheDocument();
+      const dstElements = screen.getAllByText('D/ST');
+      expect(dstElements.length).toBeGreaterThan(0);
     });
   });
 
@@ -104,22 +105,25 @@ describe('PositionGroupedView', () => {
   describe('IR indicator', () => {
     it('shows (IR) indicator for IR players', () => {
       const team = createMixedTeam();
-      render(<PositionGroupedView team={team} />);
+      const { container } = render(<PositionGroupedView team={team} />);
 
-      // IR players should show (IR) indicator
-      const irRB = screen.getByText(/IR RB/);
-      expect(irRB.textContent).toContain('(IR)');
+      // IR players should show (IR) indicator - check the parent card element
+      const irRBElement = screen.getByText(/IR RB/);
+      const irRBCard = irRBElement.closest('div');
+      expect(irRBCard?.textContent).toContain('(IR)');
 
-      const irWR = screen.getByText(/IR WR/);
-      expect(irWR.textContent).toContain('(IR)');
+      const irWRElement = screen.getByText(/IR WR/);
+      const irWRCard = irWRElement.closest('div');
+      expect(irWRCard?.textContent).toContain('(IR)');
     });
 
     it('does not show (IR) for non-IR players', () => {
       const team = createMixedTeam();
-      render(<PositionGroupedView team={team} />);
+      const { container } = render(<PositionGroupedView team={team} />);
 
-      const startingQB = screen.getByText(/Starting QB/);
-      expect(startingQB.textContent).not.toContain('(IR)');
+      const startingQBElement = screen.getByText(/Starting QB/);
+      const startingQBCard = startingQBElement.closest('div');
+      expect(startingQBCard?.textContent).not.toContain('(IR)');
     });
   });
 
@@ -172,8 +176,10 @@ describe('PositionGroupedView', () => {
       const team = createMixedTeam();
       render(<PositionGroupedView team={team} />);
 
-      // IR players should have indicator
-      expect(screen.getByText(/IR RB/).textContent).toContain('(IR)');
+      // IR players should have indicator - check the parent card element
+      const irRBElement = screen.getByText(/IR RB/);
+      const irRBCard = irRBElement.closest('div');
+      expect(irRBCard?.textContent).toContain('(IR)');
     });
 
     it('uses position-group display format', () => {

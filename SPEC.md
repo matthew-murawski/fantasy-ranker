@@ -1,91 +1,137 @@
-Fantasy Football Team Ranker - Complete Specification
-Overview:
-A web app that ranks fantasy football teams through head-to-head comparisons using a quicksort algorithm to minimize the number of comparisons needed.
-Data Source:
+Spacing System
+We'll use a consistent scale based on multiples of 4px. This creates visual rhythm and makes everything feel cohesive.
+Spacing Scale:
 
-Excel file: rosters.xlsx located in a "league data" folder
-File naming convention: roster_dub.xlsx (currently only Dub League)
-Columns: Team Name (A), Player Name (B), Position (C), NFL Team (D), Roster Slot (E), Injury Status (F)
-Data starts in row 2
-Roster Slot values: QB, WR, RB, RB/WR/TE, TE, D/ST, K, BE (bench)
-Injury Status: Flag only when value is "INJURY_RESERVE"
+xs: 4px
+sm: 8px
+md: 16px
+lg: 24px
+xl: 32px
+2xl: 48px
 
-User Flow:
+Application:
 
-App loads directly into Dub League (no league selection screen)
-Shows first head-to-head comparison of two anonymous rosters
-User selects better team via arrow buttons or keyboard arrow keys
-Continues comparisons using quicksort algorithm (roughly 35-40 comparisons for 12 teams)
-If rankings are extremely similar AND comparison hasn't been made, app requests direct tie-breaker comparison
-Displays final power rankings with expandable team rosters
+Space between player cards: 12px (3 × 4px)
+Padding inside player cards: 16px horizontal, 12px vertical
+Space between the two comparison panels: 24px
+Margin around section headers: 8px bottom
+Panel padding (overall container): 24px
+Space between position badge and player name: 8px
 
+Component Specifications
+Player Cards:
+
+Background: #1e2128
+Border: 1px solid #2a2e37 (very subtle)
+Border radius: 8px
+Padding: 16px horizontal, 12px vertical
+Hover state: Background lightens slightly to #252930, transition 0.2s ease
+Layout: Flexbox with position badge on left, player info in middle, stats on right
+
+Position Badges:
+
+Size: 40px × 32px (compact rounded rectangle)
+Border radius: 6px
+Background: Use the position colors we defined, but at 20% opacity
+Border: 1px solid of the same position color at full opacity
+Text: Position abbreviation (QB, RB, etc.), 12px, weight 600, uppercase, color matching the border
+Alignment: Centered both vertically and horizontally
+
+Comparison Panels:
+
+Background: #1e2128
+Border radius: 12px
+Padding: 24px
+Width: Each panel takes 50% of available space minus gap
+Gap between panels: 24px
+Shadow: Optional subtle shadow 0 4px 6px rgba(0, 0, 0, 0.3) for depth
+
+Buttons (Arrow buttons for choosing teams):
+
+Background: #00d4aa (teal accent)
+Padding: 16px horizontal, 12px vertical
+Border radius: 8px
+Text: 15px, weight 600, color #0f1419 (dark, for contrast against teal)
+Hover state: Background lightens to #00e6bd, transition 0.2s ease
+Border: none
+Min-width: 120px
+
+Progress Bar:
+
+Container background: #1e2128
+Fill color: #00d4aa (teal accent)
+Height: 8px
+Border radius: 4px
+Transition: width 0.3s ease
+
+Section Headers (STARTERS, BENCH, IR):
+
+Text: 14px, weight 600, uppercase, letter-spacing 0.05em
+Color: #9ca3af
+Margin bottom: 12px
+Optional: thin border-bottom 1px solid #2a2e37 with 8px padding-bottom
+
+View Toggle Buttons (Starters/Bench vs By Position):
+
+Background inactive: transparent
+Background active: #2a2e37
+Text: 14px, weight 500
+Color inactive: #6b7280
+Color active: #e8eaed
+Padding: 8px 16px
+Border radius: 6px
+Border: 1px solid #2a2e37
+Transition: all 0.2s ease
+
+Team Name Headers (on rankings screen):
+
+Text: 18px, weight 600
+Color: #e8eaed
+Expandable cards should have a subtle hover state (background #252930)
+
+Injury Status Indicators:
+
+IR badge: Small pill shape, background #ef4444 at 20% opacity, border 1px solid #ef4444, text "IR" in #ef4444
+Size: Auto-width with 6px horizontal padding, 4px vertical padding, 4px border radius
+Position: Next to player name
+
+Layout Structure
 Comparison Screen:
 
-Two rosters displayed side-by-side, each taking ~50% of screen width
-Small space between rosters with roster slots aligned
-Team names hidden (anonymous)
-View toggle buttons in top left (two buttons, inactive one greyed out)
-Two large arrow buttons at bottom (left arrow, right arrow)
-Text above arrows: "click or use arrow keys to choose the best team"
-Keyboard shortcuts: left/right arrow keys to select
-Progress bar at bottom (visual only, no text/percentage)
-Purple background, gray player cards, white text
+Max width: 1400px centered
+Two columns (panels) with 24px gap
+Progress bar at top with 32px margin-bottom
+Instructions/header text centered above panels
 
-Roster Views:
-View 1: Starter/Bench/IR (Default)
+Rankings Screen:
 
-Starters section with header "STARTERS"
+Max width: 800px centered (narrower, single column)
+Team cards stack vertically with 16px gap
+Each card expands on click to show full roster
 
-Order: QB, RB, RB, WR, WR, TE, FLEX, D/ST, K
-Format: Position label separated from player info
-Example: QB | M. Stafford (LAR)
-FLEX displayed instead of RB/WR/TE
+Responsive Behavior:
 
+On screens below 768px width, comparison panels stack vertically
+Gap between stacked panels: 24px
+Font sizes remain the same (readable on mobile)
+Padding reduces slightly: panels go to 16px instead of 24px
 
-Bench section with header "BENCH"
+Interactive States & Accessibility
+Focus Indicators:
 
-Organized by position (QBs, RBs, WRs, TEs, D/ST, K)
-Format: Position integrated with player card
-Example: RB R. White (TB)
+All interactive elements get a 2px solid outline in #00d4aa when focused
+Outline offset: 2px
+Applied to buttons, clickable cards, toggle buttons
 
+Keyboard Navigation:
 
-IR section with header "IR"
+Left/Right arrow keys already work for team selection
+Tab order should flow logically through interactive elements
+Enter key should work on focused buttons
 
-Same format as bench
-Only shows players with "INJURY_RESERVE" status
+Animations:
 
-
-
-View 2: Position-Grouped
-
-Position headers: QUARTERBACKS, RUNNING BACKS, WIDE RECEIVERS, TIGHT ENDS, D/ST, KICKERS
-Players listed under each header
-Format: M. Stafford (LAR)
-IR status still flagged/visible
-
-Final Power Rankings Page:
-
-Header: "POWER RANKINGS"
-Vertical stack of team name cards (numbered 1-12)
-Team names now revealed
-Click team card to expand roster inline below the card
-No visual change to card when expanded
-Roster always displays in Starter/Bench/IR format
-End of session (no navigation buttons)
-
-Visual Design:
-
-Purple background
-Gray player cards/roster spots
-White text for contrast
-Modern, sleek aesthetic
-Developer discretion on interactive element colors (buttons, etc.)
-Rosters separated by space only (no borders/backgrounds between panels)
-
-Technical Requirements:
-
-Web app
-Quicksort algorithm for head-to-head comparisons
-Optimize for minimum number of comparisons to establish 1-12 ranking
-No progress saving (session-based only)
-Excel file parsing for roster data
+Keep transitions subtle: 0.2s ease for most state changes
+Progress bar fills smoothly: 0.3s ease
+Card expansions: 0.25s ease
+No animations that could cause motion sickness (no spinning, excessive movement)

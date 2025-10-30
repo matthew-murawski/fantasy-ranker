@@ -1,21 +1,35 @@
 /* RankingsScreen - Final rankings layout */
 
 .container {
-  background: var(--color-background);
+  background: var(--color-bg-primary);
   min-height: 100vh;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
 }
 
 .header {
-  color: var(--color-text);
-  font-size: 32px;
-  font-weight: bold;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   text-align: center;
   margin-bottom: var(--spacing-xl);
-  font-family: sans-serif;
+  font-family: var(--font-family);
 }
 
 .list {
   max-width: 800px;
   margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+
+  .header {
+    font-size: var(--font-size-xl);
+  }
+
+  .list {
+    max-width: 100%;
+  }
 }
