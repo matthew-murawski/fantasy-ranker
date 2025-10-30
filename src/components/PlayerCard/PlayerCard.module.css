@@ -95,6 +95,7 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
   line-height: var(--line-height-normal);
+  margin-right: var(--spacing-sm);
 }
 
 .teamInfo {

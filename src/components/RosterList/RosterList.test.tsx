@@ -162,13 +162,14 @@ describe('RosterList', () => {
       const team = createFullRosterTeam();
       render(<RosterList team={team} />);
 
-      // Starters should have pipe separator
+      // Starters should have position badges and player names
       const starterSection = screen.getByText('STARTERS').parentElement;
-      expect(starterSection?.textContent).toContain('|');
+      expect(starterSection?.textContent).toContain('QB1');
+      expect(starterSection?.textContent).toContain('QB'); // Position badge
 
-      // Bench should not have pipe separator (checking bench section)
+      // Bench should display position and player names
       const benchPlayer = screen.getByText(/Bench QB/);
-      expect(benchPlayer.textContent).not.toContain('|');
+      expect(benchPlayer).toBeInTheDocument();
     });
   });
 });

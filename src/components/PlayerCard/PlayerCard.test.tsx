@@ -26,14 +26,14 @@ describe('PlayerCard', () => {
   });
 
   describe('starter format', () => {
-    it('displays position separated with pipe', () => {
+    it('displays position badge and player name', () => {
       render(<PlayerCard player={mockPlayer} displayFormat="starter" />);
       const card = screen.getByText(/QB/);
       expect(card).toBeInTheDocument();
 
-      // Check for pipe separator
+      // Check that player name is present
       const container = card.closest('div');
-      expect(container?.textContent).toContain('|');
+      expect(container?.textContent).toContain('M. Stafford');
     });
 
     it('shows position label when showPosition is true', () => {
@@ -45,7 +45,6 @@ describe('PlayerCard', () => {
       render(<PlayerCard player={mockPlayer} displayFormat="starter" showPosition={false} />);
       const container = screen.getByText(/M. Stafford/).closest('div');
       expect(container?.textContent).not.toContain('QB');
-      expect(container?.textContent).not.toContain('|');
     });
   });
 

@@ -96,12 +96,21 @@ function RosterList({
               ? { ...player, position: 'FLEX' }
               : player;
 
+            // Add spacing after QB, last RB, and last WR for visual grouping
+            const nextPlayer = sortedStarters[index + 1];
+            const needsSpacing = nextPlayer && (
+              (player.rosterSlot === 'QB') ||
+              (player.rosterSlot === 'RB' && nextPlayer.rosterSlot !== 'RB') ||
+              (player.rosterSlot === 'WR' && nextPlayer.rosterSlot !== 'WR')
+            );
+
             return (
-              <PlayerCard
-                key={`starter-${index}`}
-                player={displayPlayer}
-                displayFormat="starter"
-              />
+              <div key={`starter-${index}`} className={needsSpacing ? styles.positionGroup : undefined}>
+                <PlayerCard
+                  player={displayPlayer}
+                  displayFormat="starter"
+                />
+              </div>
             );
           })}
         </div>
