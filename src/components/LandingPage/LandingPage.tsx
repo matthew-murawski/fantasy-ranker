@@ -13,6 +13,9 @@ function LandingPage({ onStart }: LandingPageProps) {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Dub Fantasy Ranker</h1>
+      <p className={styles.description}>
+        You'll compare teams head-to-head in a series of matchups. Use the arrow keys (or click the arrows) to choose which roster is stronger. After all comparisons, you'll get a complete power ranking of your league.
+      </p>
       <button
         type="button"
         className={styles.startButton}
@@ -26,4 +29,3 @@ function LandingPage({ onStart }: LandingPageProps) {
 }
 
 export default LandingPage;
-

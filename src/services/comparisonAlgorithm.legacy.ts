@@ -1,4 +1,10 @@
 /**
+ * LEGACY - Quicksort-based comparison algorithm.
+ * This file is no longer used in the application.
+ * The app now uses the Swiss System algorithm (see src/engine/swissComparisonEngine.ts).
+ * Kept for reference only.
+ *
+ * Original description:
  * Comparison algorithm based on quicksort for ranking fantasy football teams.
  * Uses user comparisons to determine team rankings with minimal comparisons needed.
  */

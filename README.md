@@ -1,6 +1,6 @@
 # Fantasy Football Team Ranker
 
-A React + TypeScript web app that ranks fantasy football teams via head‑to‑head comparisons using a quicksort‑inspired engine to minimize comparisons.
+A React + TypeScript web app that ranks fantasy football teams via head‑to‑head comparisons using a Swiss System tournament algorithm to minimize comparisons.
 
 **What it does**
 - Loads an Excel of league rosters
@@ -39,6 +39,31 @@ Auto‑fill for missing starters
   - If no eligible bench exists for a missing slot, that slot remains empty.
 - Note: Validation expects exactly 9 starters per team. The auto‑fill aims to reach 9; if it cannot (no eligible players), validation will still fail for that team until the sheet is adjusted or additional eligible players are added.
 
+## Ranking Algorithm
+
+The app uses a **Swiss System tournament** algorithm to rank teams efficiently:
+
+- **Dynamic league support**: Works with any league size (2-20+ teams)
+- **Reduced comparisons**: ~50% fewer comparisons than previous quicksort approach
+  - 8 teams: ~12-15 comparisons
+  - 10 teams: ~20-24 comparisons
+  - 12 teams: ~24-28 comparisons
+  - 14 teams: ~28-32 comparisons
+  - 16 teams: ~32-38 comparisons
+
+**How it works**:
+1. **Swiss rounds**: Teams are paired in rounds based on current records (like a tournament)
+   - Number of rounds: `ceil(log₂(team count))`
+   - Teams with similar records face each other
+   - No rematches across rounds
+2. **Tiebreakers**: After Swiss rounds, ties are resolved using:
+   - Head-to-head results (if teams played each other)
+   - Strength of schedule (opponent win percentage)
+   - Additional comparisons if needed (when SOS is equal)
+3. **Final ranking**: Complete ordered list from best to worst team
+
+The algorithm runs entirely in the background—users just see a continuous flow of comparisons until complete.
+
 ## Features
 - Comparison screen
   - Side‑by‑side roster panels with view toggle (Starters/Bench/IR or By Position)
@@ -46,7 +71,7 @@ Auto‑fill for missing starters
   - Progress bar showing estimated completion
 
 - Rankings screen
-  - “POWER RANKINGS” list
+  - "POWER RANKINGS" list
   - Expandable team cards to view full rosters
 
 - Accessibility & theming
@@ -68,7 +93,7 @@ Auto‑fill for missing starters
 - [ ] Progress bar updates
 - [ ] View toggle switches and both rosters update together
 - [ ] Roster slots align across panels
-- [ ] Comparisons complete (~35–45 for 12 teams)
+- [ ] Comparisons complete (see Ranking Algorithm section for expected counts)
 - [ ] Rankings screen appears
 - [ ] All teams shown in rank order; cards expand to show rosters
 - [ ] Theme colors (purple/gray/white) and spacing look consistent

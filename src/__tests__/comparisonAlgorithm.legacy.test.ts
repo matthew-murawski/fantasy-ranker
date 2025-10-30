@@ -1,5 +1,10 @@
+/**
+ * LEGACY TEST - This tests the old quicksort-based comparison algorithm.
+ * The app now uses the Swiss System algorithm (see swissSystem.test.ts).
+ * This file is kept for reference only.
+ */
 import { describe, it, expect } from 'vitest';
-import { ComparisonEngine } from '../services/comparisonAlgorithm';
+import { ComparisonEngine } from '../services/comparisonAlgorithm.legacy';
 import { Team } from '../types';
 
 describe('ComparisonEngine', () => {

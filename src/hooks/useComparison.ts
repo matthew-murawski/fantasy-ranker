@@ -5,7 +5,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { Team, ComparisonPair } from '../types';
-import { ComparisonEngine } from '../services/comparisonAlgorithm';
+import { SwissComparisonEngine } from '../engine/swissComparisonEngine';
 
 export interface UseComparisonReturn {
   currentComparison: ComparisonPair | null;
@@ -16,8 +16,8 @@ export interface UseComparisonReturn {
 }
 
 export function useComparison(teams: Team[]): UseComparisonReturn {
-  // Create ComparisonEngine instance once
-  const engineRef = useRef<ComparisonEngine>(new ComparisonEngine(teams));
+  // Create SwissComparisonEngine instance once
+  const engineRef = useRef<SwissComparisonEngine>(new SwissComparisonEngine(teams));
 
   // Track current comparison
   const [currentComparison, setCurrentComparison] = useState<ComparisonPair | null>(
