@@ -19,9 +19,13 @@ describe('App Integration Flow', () => {
     const { container } = render(<App />);
 
     // Wait for landing page, then start
-    await screen.findByRole('heading', { name: /dub fantasy ranker/i });
+    await screen.findByRole('heading', { name: /fantasy ranker/i });
     const startButton = await screen.findByRole('button', { name: /start/i });
     await user.click(startButton);
+
+    // Select a league
+    const dubLeagueButton = await screen.findByRole('button', { name: /dub league/i });
+    await user.click(dubLeagueButton);
 
     // Wait for the comparison screen instruction to appear
     await screen.findByText(/click or use arrow keys to choose the best team/i);

@@ -7,11 +7,17 @@ import { Team } from '../types';
 import { parseRosterFile } from './excelParser';
 
 function resolveRosterUrl(leagueName: string): string {
+  // Use Vite asset URL for the real in-repo data files
   if (leagueName === 'dub') {
-    // Use Vite asset URL for the real in-repo data file
     return new URL('../../data/roster_dub.xlsx', import.meta.url).href;
   }
-  // Fallback for tests/other leagues; tests mock fetch so path content is irrelevant
+  if (leagueName === 'pitt') {
+    return new URL('../../data/roster_pitt.xlsx', import.meta.url).href;
+  }
+  if (leagueName === 'men') {
+    return new URL('../../data/roster_men.xlsx', import.meta.url).href;
+  }
+  // Fallback for tests; tests mock fetch so path content is irrelevant
   return `/data/roster_${leagueName}.xlsx`;
 }
 
