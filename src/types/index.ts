@@ -15,6 +15,7 @@ export interface Player {
 
 export interface Team {
   teamName: string;
+  ownerName?: string;
   players: Player[];
   starters: Player[];
   bench: Player[];

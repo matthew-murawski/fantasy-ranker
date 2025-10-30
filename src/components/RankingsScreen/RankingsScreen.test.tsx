@@ -2,7 +2,7 @@
  * Tests for RankingsScreen component
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import RankingsScreen from './RankingsScreen';
@@ -60,5 +60,34 @@ describe('RankingsScreen', () => {
     const starters = screen.getAllByText('STARTERS');
     expect(starters.length).toBeGreaterThanOrEqual(2);
   });
-});
 
+  it('shows Rank Again button and calls onRestart when clicked', async () => {
+    const user = userEvent.setup();
+    const onRestart = vi.fn();
+    render(<RankingsScreen rankedTeams={teams} onRestart={onRestart} />);
+
+    const btn = screen.getByRole('button', { name: /rank again/i });
+    await user.click(btn);
+    expect(onRestart).toHaveBeenCalledTimes(1);
+  });
+
+  it('displays owner name when available', () => {
+    const teamsWithOwners = [
+      { ...createMockTeam('MuzzyCompany'), ownerName: 'Matt McIsaac' },
+      { ...createMockTeam('Team 2'), ownerName: 'John Doe' },
+      createMockTeam('Team 3'), // No owner name
+    ];
+    render(<RankingsScreen rankedTeams={teamsWithOwners} />);
+
+    // Owner names should be displayed
+    expect(screen.getByText('Matt McIsaac')).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+
+    // Team names should still be displayed next to owner names
+    expect(screen.getByText('MuzzyCompany')).toBeInTheDocument();
+    expect(screen.getByText('Team 2')).toBeInTheDocument();
+
+    // Team without owner should still show team name
+    expect(screen.getByText('Team 3')).toBeInTheDocument();
+  });
+});

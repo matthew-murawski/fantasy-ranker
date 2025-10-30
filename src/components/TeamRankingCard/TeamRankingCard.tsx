@@ -15,11 +15,16 @@ export interface TeamRankingCardProps {
 }
 
 function TeamRankingCard({ team, rank, isExpanded, onToggle }: TeamRankingCardProps) {
+  const rankClass =
+    rank === 1 ? styles.first : rank === 2 ? styles.second : rank === 3 ? styles.third : '';
   return (
-    <div className={styles.card} onClick={onToggle} role="button" aria-expanded={isExpanded}>
+    <div className={`${styles.card} ${rankClass}`} onClick={onToggle} role="button" aria-expanded={isExpanded}>
       <div className={styles.header}>
         <span className={styles.rank}>{rank}.</span>{' '}
-        <span className={styles.name}>{team.teamName}</span>
+        <span className={styles.name}>
+          {team.ownerName || team.teamName}
+          {team.ownerName && <span className={styles.teamName}> {team.teamName}</span>}
+        </span>
       </div>
       <div className={`${styles.expandable} ${isExpanded ? styles.expanded : ''}`}>
         {isExpanded && (
@@ -33,4 +38,3 @@ function TeamRankingCard({ team, rank, isExpanded, onToggle }: TeamRankingCardPr
 }
 
 export default TeamRankingCard;
-

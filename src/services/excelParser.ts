@@ -45,8 +45,9 @@ export async function parseRosterFile(file: File | ArrayBuffer): Promise<Team[]>
     // Skip header row (row 0) and process data rows
     const dataRows = data.slice(1);
 
-    // Group players by team
+    // Group players by team and track owner names
     const teamMap = new Map<string, Player[]>();
+    const ownerMap = new Map<string, string>(); // teamName -> ownerName
 
     for (const row of dataRows) {
       // Skip empty rows
@@ -65,6 +66,7 @@ export async function parseRosterFile(file: File | ArrayBuffer): Promise<Team[]>
         percentStartedRaw !== undefined && percentStartedRaw !== null && percentStartedRaw !== ''
           ? Number(percentStartedRaw)
           : undefined;
+      const ownerName = row.length > 8 ? String(row[8] || '').trim() : '';
 
       // Skip rows with missing critical data
       if (!teamName || !playerName) {
@@ -91,6 +93,11 @@ export async function parseRosterFile(file: File | ArrayBuffer): Promise<Team[]>
         teamMap.set(teamName, []);
       }
       teamMap.get(teamName)!.push(player);
+
+      // Track owner name for this team
+      if (ownerName && !ownerMap.has(teamName)) {
+        ownerMap.set(teamName, ownerName);
+      }
     }
 
     // Check for duplicate team names
@@ -117,6 +124,7 @@ export async function parseRosterFile(file: File | ArrayBuffer): Promise<Team[]>
 
       teams.push({
         teamName,
+        ownerName: ownerMap.get(teamName),
         players,
         starters,
         bench,

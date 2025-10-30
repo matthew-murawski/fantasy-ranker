@@ -9,9 +9,10 @@ import styles from './RankingsScreen.module.css';
 
 export interface RankingsScreenProps {
   rankedTeams: Team[]; // ordered best to worst
+  onRestart?: () => void;
 }
 
-function RankingsScreen({ rankedTeams }: RankingsScreenProps) {
+function RankingsScreen({ rankedTeams, onRestart }: RankingsScreenProps) {
   // Track expanded cards. Allow multiple expansions.
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
@@ -40,6 +41,16 @@ function RankingsScreen({ rankedTeams }: RankingsScreenProps) {
             onToggle={() => toggle(i)}
           />
         ))}
+      </div>
+      <div className={styles.footer}>
+        <button
+          type="button"
+          className={styles.restartButton}
+          onClick={onRestart}
+          aria-label="Rank again"
+        >
+          Rank Again
+        </button>
       </div>
     </div>
   );

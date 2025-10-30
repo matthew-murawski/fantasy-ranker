@@ -50,7 +50,7 @@ function App() {
         <LandingPage onStart={() => setStarted(true)} />
       )}
       {!loading && !error && teams && teams.length > 0 && started && (
-        <ComparisonFlow teams={teams} />
+        <ComparisonFlow teams={teams} onRestart={() => setStarted(false)} />
       )}
     </div>
   );
