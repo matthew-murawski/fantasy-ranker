@@ -26,11 +26,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r Python/requirements.txt
+          pip install -r python/requirements.txt
 
       - name: Run roster scraper
         run: |
-          python Python/scrape_rosters.py
+          python python/scrape_rosters.py
 
       - name: Check for changes
         id: git-check

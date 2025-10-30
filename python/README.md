@@ -26,10 +26,10 @@ To run the scraper manually:
 
 ```bash
 # Install dependencies
-pip install -r Python/requirements.txt
+pip install -r python/requirements.txt
 
 # Run the scraper
-python Python/scrape_rosters.py
+python python/scrape_rosters.py
 ```
 
 ### Manual Triggering
