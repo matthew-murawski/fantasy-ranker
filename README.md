@@ -3,7 +3,8 @@
 A React + TypeScript web app that ranks fantasy football teams via head‑to‑head comparisons using a Swiss System tournament algorithm to minimize comparisons.
 
 **What it does**
-- Loads an Excel of league rosters
+- Supports multiple leagues; pick one on start (Dub, Pitt, Men by default)
+- Loads the selected league’s Excel roster
 - Shows two anonymous rosters side‑by‑side for selection
 - Accepts clicks or left/right arrow keys
 - Tracks progress and produces final Power Rankings with expandable team cards
@@ -21,9 +22,19 @@ A React + TypeScript web app that ranks fantasy football teams via head‑to‑h
 - npm run build (prod build)
 - npm run preview (serve build locally)
 
-## Data File
-- Default path: `data/roster_dub.xlsx`
-- Expected headers (row 1):
+## Leagues & Data Files
+- Built-in example leagues and files:
+  - Dub League → `data/roster_dub.xlsx`
+  - Pitt League → `data/roster_pitt.xlsx`
+  - Men League → `data/roster_men.xlsx`
+- File naming convention: `data/roster_<league>.xlsx`
+- Add another league:
+  - Create a file like `data/roster_<your-league>.xlsx` following the headers below
+  - Add a button for it in `src/components/LandingPage/LandingPage.tsx` that calls `onLeagueSelect('<your-league>')`
+  - Add a mapping in `src/services/dataService.ts` inside `resolveRosterUrl` so Vite bundles the asset:
+    `if (leagueName === '<your-league>') return new URL('../../data/roster_<your-league>.xlsx', import.meta.url).href;`
+
+Expected headers (row 1):
   - Team Name, Player Name, Position, NFL Team, Roster Slot, Injury Status, Percent Started (optional)
 - Data rows start at row 2.
 
@@ -87,7 +98,9 @@ The algorithm runs entirely in the background—users just see a continuous flow
 
 ## Manual Testing Checklist
 - [ ] App loads without errors
-- [ ] League data loads correctly from `data/roster_dub.xlsx`
+- [ ] Landing page shows title and START button
+- [ ] Clicking START reveals league choices (Dub, Pitt, Men)
+- [ ] Selecting a league loads its data (e.g., `data/roster_dub.xlsx`)
 - [ ] First comparison appears
 - [ ] Arrow buttons work and keyboard arrows work
 - [ ] Progress bar updates
