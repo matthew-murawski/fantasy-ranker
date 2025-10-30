@@ -130,9 +130,9 @@ def main():
         {
             'name': 'Men League',
             'config': {
-                'league_id': 1117367117,  # Note: This appears to be the same as Dub League in your notebook
+                'league_id': 1117367117,
                 'year': 2025,
-                'espn_s2': 'AEA9yNQ1es19aXwjLxGHsO7YZVFGwukA4ku7y6tV0m1%2F2uWeUZFcEkjbW7ie3eGiby2eRp5jV6htEMImvAdhPDDV6oeLR26Q0IL%2FsbTpcb0fnOs%2B4hH7Ffg%2FHCn%2FOW1dHF2l7WVASbHkN5O8Xnu%2BIWIHIiFKxluHbQsZauprX8weM4amU1xNlz14YByqmSZoAwLvPG8FEcqql3JQGMhFiPnBVBWOsUbalKkMcHkSZQP0LI2Uqaeo8r%2F467LlHLP5Dt0jv%2F5No1v0FakDV5jg6EhwRAkdb8l7J0HGQHbdH6QKQA%3D%3D',
+                'espn_s2': 'AEBLTkLnfHujJ41yA7WpKNE7%2Fs1MzmaX4XuHY0L7e%2FcE9%2FOi33VZjDsjqMvEFQjblyLkMOk7Q%2F5Fu36u1vnKD%2B2tFbgnz%2FqHPDXri0Fb6sweFe4y9qPi16YSqjzrJvqLOUAhSiWhsgkrBkdbwtQZZrRUZChXSQrezVsqFSmYzuDZ9abyiXSwN86xA2OX%2BFuPqVCjxoNabbGhhTb%2FMKEuXEd6ByhZmSqaSRfocst5Gpku%2BgonBpesFR6qJJjHm%2BJSyQZfs1uoWR9TnsjrZxrw3IUv%2FLd6zi1s%2FbGunsNHBkF2Pg%3D%3D',
                 'swid': '{273A56A8-8D06-486D-8085-A3D29F8DA5D2}'
             },
             'output_file': 'roster_men.xlsx'
