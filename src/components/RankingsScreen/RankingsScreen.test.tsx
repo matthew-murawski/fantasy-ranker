@@ -15,8 +15,20 @@ describe('RankingsScreen', () => {
     createMockTeam('Team 3'),
   ];
 
+  const mockGetTeamRecord = vi.fn((teamName: string) => ({
+    wins: 2,
+    losses: 1,
+  }));
+
   it('renders header and all teams in order', () => {
-    render(<RankingsScreen rankedTeams={teams} />);
+    render(
+      <RankingsScreen
+        rankedTeams={teams}
+        leagueName="test"
+        rankerName="TestUser"
+        getTeamRecord={mockGetTeamRecord}
+      />
+    );
 
     expect(screen.getByText('POWER RANKINGS')).toBeInTheDocument();
 
@@ -33,7 +45,14 @@ describe('RankingsScreen', () => {
 
   it('clicking a card expands it, clicking again collapses', async () => {
     const user = userEvent.setup();
-    render(<RankingsScreen rankedTeams={teams} />);
+    render(
+      <RankingsScreen
+        rankedTeams={teams}
+        leagueName="test"
+        rankerName="TestUser"
+        getTeamRecord={mockGetTeamRecord}
+      />
+    );
 
     // Click first card
     const firstCard = screen.getAllByRole('button')[0];
@@ -49,7 +68,14 @@ describe('RankingsScreen', () => {
 
   it('can expand multiple cards', async () => {
     const user = userEvent.setup();
-    render(<RankingsScreen rankedTeams={teams} />);
+    render(
+      <RankingsScreen
+        rankedTeams={teams}
+        leagueName="test"
+        rankerName="TestUser"
+        getTeamRecord={mockGetTeamRecord}
+      />
+    );
 
     const cards = screen.getAllByRole('button');
 
@@ -64,7 +90,15 @@ describe('RankingsScreen', () => {
   it('shows Rank Again button and calls onRestart when clicked', async () => {
     const user = userEvent.setup();
     const onRestart = vi.fn();
-    render(<RankingsScreen rankedTeams={teams} onRestart={onRestart} />);
+    render(
+      <RankingsScreen
+        rankedTeams={teams}
+        leagueName="test"
+        rankerName="TestUser"
+        getTeamRecord={mockGetTeamRecord}
+        onRestart={onRestart}
+      />
+    );
 
     const btn = screen.getByRole('button', { name: /rank again/i });
     await user.click(btn);
@@ -77,7 +111,14 @@ describe('RankingsScreen', () => {
       { ...createMockTeam('Team 2'), ownerName: 'John Doe' },
       createMockTeam('Team 3'), // No owner name
     ];
-    render(<RankingsScreen rankedTeams={teamsWithOwners} />);
+    render(
+      <RankingsScreen
+        rankedTeams={teamsWithOwners}
+        leagueName="test"
+        rankerName="TestUser"
+        getTeamRecord={mockGetTeamRecord}
+      />
+    );
 
     // Owner names should be displayed
     expect(screen.getByText('Matt McIsaac')).toBeInTheDocument();

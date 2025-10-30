@@ -1,20 +1,70 @@
 /**
  * RankingsScreen displays the final power rankings with expandable team cards.
+ * Automatically submits ranking data to Google Sheets on mount.
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Team } from '../../types';
 import TeamRankingCard from '../TeamRankingCard';
+import { submitRankingToSheets, generateTimestamp } from '../../services/sheetsService';
+import { RankingSubmission } from '../../types/sheets';
 import styles from './RankingsScreen.module.css';
 
 export interface RankingsScreenProps {
   rankedTeams: Team[]; // ordered best to worst
+  leagueName: string;
+  rankerName: string;
+  getTeamRecord: (teamName: string) => { wins: number; losses: number } | null;
   onRestart?: () => void;
 }
 
-function RankingsScreen({ rankedTeams, onRestart }: RankingsScreenProps) {
+function RankingsScreen({ rankedTeams, leagueName, rankerName, getTeamRecord, onRestart }: RankingsScreenProps) {
   // Track expanded cards. Allow multiple expansions.
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+
+  // Track submission status
+  const [submissionStatus, setSubmissionStatus] = useState<'pending' | 'success' | 'error'>('pending');
+
+  // Submit ranking data to Google Sheets on mount
+  useEffect(() => {
+    const submitRankings = async () => {
+      try {
+        // Prepare submission data
+        const timestamp = generateTimestamp();
+        const teams = rankedTeams.map((team, index) => {
+          const record = getTeamRecord(team.teamName);
+          return {
+            team,
+            rank: index + 1,
+            wins: record?.wins ?? 0,
+            losses: record?.losses ?? 0,
+          };
+        });
+
+        const submission: RankingSubmission = {
+          rankerName,
+          league: leagueName,
+          timestamp,
+          teams,
+        };
+
+        // Submit to Google Sheets
+        const result = await submitRankingToSheets(submission);
+
+        if (result.success) {
+          setSubmissionStatus('success');
+        } else {
+          setSubmissionStatus('error');
+          console.error('Submission failed:', result.error);
+        }
+      } catch (error) {
+        console.error('Error submitting rankings:', error);
+        setSubmissionStatus('error');
+      }
+    };
+
+    submitRankings();
+  }, [rankedTeams, leagueName, rankerName, getTeamRecord]);
 
   const toggle = (index: number) => {
     setExpanded(prev => {
@@ -31,6 +81,19 @@ function RankingsScreen({ rankedTeams, onRestart }: RankingsScreenProps) {
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>POWER RANKINGS</h1>
+
+      {/* Submission status message */}
+      {submissionStatus === 'success' && (
+        <div className={styles.successMessage}>
+          ✓ Your rankings have been saved
+        </div>
+      )}
+      {submissionStatus === 'error' && (
+        <div className={styles.errorMessage}>
+          There was an issue saving your rankings. You can still see your results below.
+        </div>
+      )}
+
       <div className={styles.list}>
         {rankedTeams.map((team, i) => (
           <TeamRankingCard

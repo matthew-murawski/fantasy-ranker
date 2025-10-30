@@ -1,6 +1,7 @@
 /**
  * LandingPage displays the app title and a start button.
  * After clicking START, shows league selection buttons.
+ * After selecting a league, prompts for the ranker's name.
  * Uses theme variables and global font to match the app style.
  */
 
@@ -8,18 +9,32 @@ import { useState } from 'react';
 import styles from './LandingPage.module.css';
 
 export interface LandingPageProps {
-  onLeagueSelect: (leagueName: string) => void;
+  onLeagueSelect: (leagueName: string, rankerName: string) => void;
 }
 
 function LandingPage({ onLeagueSelect }: LandingPageProps) {
   const [showLeagueSelect, setShowLeagueSelect] = useState(false);
+  const [selectedLeague, setSelectedLeague] = useState<string | null>(null);
+  const [rankerName, setRankerName] = useState('');
 
   const handleStart = () => {
     setShowLeagueSelect(true);
   };
 
   const handleLeagueClick = (leagueName: string) => {
-    onLeagueSelect(leagueName);
+    setSelectedLeague(leagueName);
+  };
+
+  const handleNameSubmit = () => {
+    if (selectedLeague && rankerName.trim().length >= 2) {
+      onLeagueSelect(selectedLeague, rankerName.trim());
+    }
+  };
+
+  const handleNameKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleNameSubmit();
+    }
   };
 
   return (
@@ -40,7 +55,7 @@ function LandingPage({ onLeagueSelect }: LandingPageProps) {
         </button>
       )}
 
-      {showLeagueSelect && (
+      {showLeagueSelect && !selectedLeague && (
         <div className={styles.leagueSelection}>
           <h2 className={styles.leagueTitle}>Choose League</h2>
           <div className={styles.leagueButtons}>
@@ -69,6 +84,31 @@ function LandingPage({ onLeagueSelect }: LandingPageProps) {
               Men League
             </button>
           </div>
+        </div>
+      )}
+
+      {selectedLeague && (
+        <div className={styles.nameInput}>
+          <h2 className={styles.nameTitle}>Enter your name:</h2>
+          <input
+            type="text"
+            className={styles.nameField}
+            value={rankerName}
+            onChange={(e) => setRankerName(e.target.value)}
+            onKeyPress={handleNameKeyPress}
+            placeholder="Your name"
+            aria-label="Enter your name"
+            autoFocus
+          />
+          <button
+            type="button"
+            className={styles.continueButton}
+            onClick={handleNameSubmit}
+            disabled={rankerName.trim().length < 2}
+            aria-label="Continue to comparisons"
+          >
+            Continue
+          </button>
         </div>
       )}
     </div>

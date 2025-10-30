@@ -112,6 +112,72 @@
   background: var(--color-dst);
 }
 
+/* Name input section */
+.nameInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  animation: fadeIn 0.5s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.nameTitle {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.nameField {
+  width: 100%;
+  padding: 12px var(--spacing-md);
+  font-size: var(--font-size-md);
+  border: 2px solid var(--color-accent);
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.nameField:focus {
+  outline: none;
+  border-color: var(--color-accent-hover);
+}
+
+.nameField::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.continueButton {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  padding: 12px var(--spacing-md);
+  border: none;
+  border-radius: 8px;
+  min-width: 160px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.continueButton:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.continueButton:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.continueButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Fade in animation */
 @keyframes fadeIn {
   from {

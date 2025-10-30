@@ -50,7 +50,34 @@ describe('LandingPage', () => {
     expect(screen.queryByRole('button', { name: /^start$/i })).not.toBeInTheDocument();
   });
 
-  it('invokes onLeagueSelect with "dub" when clicking Dub League button', async () => {
+  it('invokes onLeagueSelect with league and ranker name when completing flow', async () => {
+    const user = userEvent.setup();
+    const onLeagueSelect = vi.fn();
+    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+
+    // Click START
+    await user.click(screen.getByRole('button', { name: /start/i }));
+
+    // Select league
+    await user.click(screen.getByRole('button', { name: /dub league/i }));
+
+    // Should now see name input
+    expect(screen.getByText(/enter your name/i)).toBeInTheDocument();
+    const nameInput = screen.getByRole('textbox', { name: /enter your name/i });
+    expect(nameInput).toBeInTheDocument();
+
+    // Type name
+    await user.type(nameInput, 'TestUser');
+
+    // Click Continue
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
+    // Should call onLeagueSelect with league and name
+    expect(onLeagueSelect).toHaveBeenCalledTimes(1);
+    expect(onLeagueSelect).toHaveBeenCalledWith('dub', 'TestUser');
+  });
+
+  it('disables continue button when name is less than 2 characters', async () => {
     const user = userEvent.setup();
     const onLeagueSelect = vi.fn();
     render(<LandingPage onLeagueSelect={onLeagueSelect} />);
@@ -58,11 +85,22 @@ describe('LandingPage', () => {
     await user.click(screen.getByRole('button', { name: /start/i }));
     await user.click(screen.getByRole('button', { name: /dub league/i }));
 
-    expect(onLeagueSelect).toHaveBeenCalledTimes(1);
-    expect(onLeagueSelect).toHaveBeenCalledWith('dub');
+    const nameInput = screen.getByRole('textbox', { name: /enter your name/i });
+    const continueButton = screen.getByRole('button', { name: /continue/i });
+
+    // Initially disabled (empty)
+    expect(continueButton).toBeDisabled();
+
+    // Type 1 character
+    await user.type(nameInput, 'A');
+    expect(continueButton).toBeDisabled();
+
+    // Type 2nd character
+    await user.type(nameInput, 'B');
+    expect(continueButton).not.toBeDisabled();
   });
 
-  it('invokes onLeagueSelect with "pitt" when clicking Pitt League button', async () => {
+  it('allows submission via Enter key', async () => {
     const user = userEvent.setup();
     const onLeagueSelect = vi.fn();
     render(<LandingPage onLeagueSelect={onLeagueSelect} />);
@@ -70,19 +108,10 @@ describe('LandingPage', () => {
     await user.click(screen.getByRole('button', { name: /start/i }));
     await user.click(screen.getByRole('button', { name: /pitt league/i }));
 
-    expect(onLeagueSelect).toHaveBeenCalledTimes(1);
-    expect(onLeagueSelect).toHaveBeenCalledWith('pitt');
-  });
-
-  it('invokes onLeagueSelect with "men" when clicking Men League button', async () => {
-    const user = userEvent.setup();
-    const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
-
-    await user.click(screen.getByRole('button', { name: /start/i }));
-    await user.click(screen.getByRole('button', { name: /men league/i }));
+    const nameInput = screen.getByRole('textbox', { name: /enter your name/i });
+    await user.type(nameInput, 'TestUser{Enter}');
 
     expect(onLeagueSelect).toHaveBeenCalledTimes(1);
-    expect(onLeagueSelect).toHaveBeenCalledWith('men');
+    expect(onLeagueSelect).toHaveBeenCalledWith('pitt', 'TestUser');
   });
 });

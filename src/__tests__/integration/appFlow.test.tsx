@@ -27,6 +27,12 @@ describe('App Integration Flow', () => {
     const dubLeagueButton = await screen.findByRole('button', { name: /dub league/i });
     await user.click(dubLeagueButton);
 
+    // Enter name
+    const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
+    await user.type(nameInput, 'TestUser');
+    const continueButton = await screen.findByRole('button', { name: /continue/i });
+    await user.click(continueButton);
+
     // Wait for the comparison screen instruction to appear
     await screen.findByText(/click or use arrow keys to choose the best team/i);
 

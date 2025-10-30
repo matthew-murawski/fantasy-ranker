@@ -10,15 +10,25 @@ import RankingsScreen from '../RankingsScreen';
 
 export interface ComparisonFlowProps {
   teams: Team[];
+  leagueName: string;
+  rankerName: string;
   onRestart?: () => void;
 }
 
-function ComparisonFlow({ teams, onRestart }: ComparisonFlowProps) {
-  const { currentComparison, progress, isComplete, selectWinner, finalRanking } = useComparison(teams);
+function ComparisonFlow({ teams, leagueName, rankerName, onRestart }: ComparisonFlowProps) {
+  const { currentComparison, progress, isComplete, selectWinner, finalRanking, getTeamRecord } = useComparison(teams);
 
   if (isComplete) {
     if (finalRanking && finalRanking.length > 0) {
-      return <RankingsScreen rankedTeams={finalRanking} onRestart={onRestart} />;
+      return (
+        <RankingsScreen
+          rankedTeams={finalRanking}
+          leagueName={leagueName}
+          rankerName={rankerName}
+          getTeamRecord={getTeamRecord}
+          onRestart={onRestart}
+        />
+      );
     }
     return <div>Loading final rankings...</div>;
   }

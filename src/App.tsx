@@ -15,12 +15,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
+  const [leagueName, setLeagueName] = useState<string | null>(null);
+  const [rankerName, setRankerName] = useState<string | null>(null);
 
-  const handleLeagueSelect = async (leagueName: string) => {
+  const handleLeagueSelect = async (selectedLeague: string, selectedRankerName: string) => {
     try {
       setLoading(true);
       setError(null);
-      const loaded = await loadLeagueData(leagueName);
+      setLeagueName(selectedLeague);
+      setRankerName(selectedRankerName);
+      const loaded = await loadLeagueData(selectedLeague);
       // Validate before setting
       validateRosterData(loaded);
       setTeams(loaded);
@@ -36,6 +40,8 @@ function App() {
     setStarted(false);
     setTeams(null);
     setError(null);
+    setLeagueName(null);
+    setRankerName(null);
   };
 
   return (
@@ -47,8 +53,13 @@ function App() {
       {!loading && !error && !started && (
         <LandingPage onLeagueSelect={handleLeagueSelect} />
       )}
-      {!loading && !error && teams && teams.length > 0 && started && (
-        <ComparisonFlow teams={teams} onRestart={handleRestart} />
+      {!loading && !error && teams && teams.length > 0 && started && leagueName && rankerName && (
+        <ComparisonFlow
+          teams={teams}
+          leagueName={leagueName}
+          rankerName={rankerName}
+          onRestart={handleRestart}
+        />
       )}
     </div>
   );

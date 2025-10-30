@@ -49,6 +49,11 @@ describe('App', () => {
     // Click Dub League button
     await user.click(screen.getByRole('button', { name: /dub league/i }));
 
+    // Should show name input
+    const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
+    await user.type(nameInput, 'TestUser');
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
     // Should render comparison instruction after data loads
     expect(
       await screen.findByText(/click or use arrow keys to choose the best team/i)
@@ -68,6 +73,10 @@ describe('App', () => {
     await user.click(screen.getByRole('button', { name: /start/i }));
     await user.click(screen.getByRole('button', { name: /pitt league/i }));
 
+    const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
+    await user.type(nameInput, 'TestUser');
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
     await waitFor(() => {
       expect(loadLeagueData).toHaveBeenCalledWith('pitt');
     });
@@ -82,6 +91,10 @@ describe('App', () => {
 
     await user.click(screen.getByRole('button', { name: /start/i }));
     await user.click(screen.getByRole('button', { name: /men league/i }));
+
+    const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
+    await user.type(nameInput, 'TestUser');
+    await user.click(screen.getByRole('button', { name: /continue/i }));
 
     await waitFor(() => {
       expect(loadLeagueData).toHaveBeenCalledWith('men');
@@ -98,6 +111,10 @@ describe('App', () => {
 
     await user.click(screen.getByRole('button', { name: /start/i }));
     await user.click(screen.getByRole('button', { name: /dub league/i }));
+
+    const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
+    await user.type(nameInput, 'TestUser');
+    await user.click(screen.getByRole('button', { name: /continue/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/error loading data/i)).toBeInTheDocument();

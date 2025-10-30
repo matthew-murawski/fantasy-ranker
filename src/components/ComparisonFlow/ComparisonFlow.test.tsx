@@ -16,7 +16,7 @@ describe('ComparisonFlow', () => {
       createMockTeam('Team 3'),
     ];
 
-    render(<ComparisonFlow teams={teams} />);
+    render(<ComparisonFlow teams={teams} leagueName="test" rankerName="TestUser" />);
 
     // Should show instruction text from ComparisonScreen
     const instruction = screen.getByText(/click or use arrow keys to choose the best team/i);
@@ -26,7 +26,7 @@ describe('ComparisonFlow', () => {
   it('renders loading message when no comparison available', () => {
     const teams = [] as any[];
 
-    render(<ComparisonFlow teams={teams} />);
+    render(<ComparisonFlow teams={teams} leagueName="test" rankerName="TestUser" />);
 
     const loading = screen.getByText(/loading/i);
     expect(loading).toBeTruthy();
@@ -36,7 +36,7 @@ describe('ComparisonFlow', () => {
     const user = userEvent.setup();
     const teams = [createMockTeam('Team 1'), createMockTeam('Team 2')];
 
-    render(<ComparisonFlow teams={teams} />);
+    render(<ComparisonFlow teams={teams} leagueName="test" rankerName="TestUser" />);
 
     // Initially should show comparison screen
     expect(screen.getByText(/click or use arrow keys/i)).toBeTruthy();
@@ -53,7 +53,7 @@ describe('ComparisonFlow', () => {
     const user = userEvent.setup();
     const teams = [createMockTeam('Team 1'), createMockTeam('Team 2')];
 
-    const { container } = render(<ComparisonFlow teams={teams} />);
+    const { container } = render(<ComparisonFlow teams={teams} leagueName="test" rankerName="TestUser" />);
 
     // Initially should have comparison screen with progress bar
     let progressBar = container.querySelector('[class*="progressContainer"]');
@@ -75,7 +75,7 @@ describe('ComparisonFlow', () => {
     const user = userEvent.setup();
     const teams = [createMockTeam('Team 1'), createMockTeam('Team 2')];
 
-    render(<ComparisonFlow teams={teams} />);
+    render(<ComparisonFlow teams={teams} leagueName="test" rankerName="TestUser" />);
 
     const leftButton = screen.getByRole('button', { name: /select left team/i });
     await user.click(leftButton);

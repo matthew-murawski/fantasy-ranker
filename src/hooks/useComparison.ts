@@ -13,6 +13,7 @@ export interface UseComparisonReturn {
   isComplete: boolean;
   selectWinner: (winner: Team) => void;
   finalRanking: Team[] | null;
+  getTeamRecord: (teamName: string) => { wins: number; losses: number } | null;
 }
 
 export function useComparison(teams: Team[]): UseComparisonReturn {
@@ -69,11 +70,24 @@ export function useComparison(teams: Team[]): UseComparisonReturn {
     [currentComparison]
   );
 
+  const getTeamRecord = useCallback(
+    (teamName: string) => {
+      const engine = engineRef.current;
+      // Access the internal state to get team records
+      // This is safe because we're only reading data
+      const record = (engine as any).state?.teamRecords?.get(teamName);
+      if (!record) return null;
+      return { wins: record.wins, losses: record.losses };
+    },
+    []
+  );
+
   return {
     currentComparison,
     progress,
     isComplete,
     selectWinner,
     finalRanking,
+    getTeamRecord,
   };
 }
