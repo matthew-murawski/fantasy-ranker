@@ -132,8 +132,8 @@ def main():
             'config': {
                 'league_id': 1117367117,
                 'year': 2025,
-                'espn_s2': 'AEBLTkLnfHujJ41yA7WpKNE7%2Fs1MzmaX4XuHY0L7e%2FcE9%2FOi33VZjDsjqMvEFQjblyLkMOk7Q%2F5Fu36u1vnKD%2B2tFbgnz%2FqHPDXri0Fb6sweFe4y9qPi16YSqjzrJvqLOUAhSiWhsgkrBkdbwtQZZrRUZChXSQrezVsqFSmYzuDZ9abyiXSwN86xA2OX%2BFuPqVCjxoNabbGhhTb%2FMKEuXEd6ByhZmSqaSRfocst5Gpku%2BgonBpesFR6qJJjHm%2BJSyQZfs1uoWR9TnsjrZxrw3IUv%2FLd6zi1s%2FbGunsNHBkF2Pg%3D%3D',
-                'swid': '{273A56A8-8D06-486D-8085-A3D29F8DA5D2}'
+                'espn_s2': 'AEAbleP7xjl6Yf1a8Uc9f26UwUywOuAVmzT4ASkjcx88%2F0QI4Dh7v6d03QUpLYvUA76BqZGGuUsNd%2B9WKmnR1QH9HqwS0F8xvYEe8feXfCCGJdEWtknjnoC55Xryr1YZYdN%2BAD0cIwc%2FyCipibnhJSNIg0g3HHZ3mRk6kN0FWEJEj3o7BCtuHYqqrpHqN0vVG4a9NYeusRjO3hFHT31atOFGIERjfWlrkPzN3IKEJgMI0JKtqsKPn20oVy5TYBMjepp22swMU4dJaQaCPEkaFrcTeFzBd3YFAGTb0Upl%2FpgP%2FA%3D%3D',
+                'swid': '{BE4FFB5F-9056-4FD9-BF01-F311BD7548BC}'
             },
             'output_file': 'roster_men.xlsx'
         }
