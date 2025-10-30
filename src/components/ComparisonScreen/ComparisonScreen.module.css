@@ -89,20 +89,26 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
   }
 
   .rosterContainer {
-    flex-direction: column;
-    gap: var(--spacing-lg);
+    /* Keep side-by-side layout on mobile */
+    flex-direction: row;
+    gap: var(--spacing-sm);
   }
 
   .rosterPanel {
-    max-width: 100%;
+    flex: 1;
+    max-width: 50%;
   }
 
   .buttonContainer {
     flex-direction: column;
     gap: var(--spacing-md);
+  }
+
+  .instructionText {
+    font-size: var(--font-size-base);
   }
 }

@@ -109,3 +109,31 @@
   font-weight: var(--font-weight-normal);
   color: var(--color-text-tertiary);
 }
+
+@media (max-width: 768px) {
+  .card {
+    padding: 6px var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .positionLabel {
+    width: 32px;
+    height: 24px;
+    font-size: 10px;
+    margin-right: 6px;
+  }
+
+  .playerName {
+    font-size: var(--font-size-sm);
+    margin-right: 4px;
+  }
+
+  .teamInfo {
+    font-size: var(--font-size-xs);
+  }
+
+  .separator {
+    margin: 0 4px;
+    font-size: var(--font-size-xs);
+  }
+}

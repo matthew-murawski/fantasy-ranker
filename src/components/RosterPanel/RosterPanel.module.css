@@ -52,6 +52,16 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
+  }
+
+  .toggleContainer {
+    gap: var(--spacing-xs);
+  }
+
+  .buttonActive,
+  .buttonInactive {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
   }
 }

@@ -21,3 +21,15 @@
   padding-bottom: 8px;
   border-bottom: 1px solid var(--color-border);
 }
+
+@media (max-width: 768px) {
+  .sectionHeader {
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: 4px;
+  }
+
+  .section {
+    margin-top: var(--spacing-sm);
+  }
+}

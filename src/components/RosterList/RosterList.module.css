@@ -25,3 +25,15 @@
 .positionGroup {
   margin-bottom: var(--spacing-md);
 }
+
+@media (max-width: 768px) {
+  .sectionHeader {
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: 4px;
+  }
+
+  .positionGroup {
+    margin-bottom: var(--spacing-sm);
+  }
+}
