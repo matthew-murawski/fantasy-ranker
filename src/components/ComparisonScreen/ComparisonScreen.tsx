@@ -65,6 +65,17 @@ function ComparisonScreen({
         </button>
       </div>
 
+      {/* Instruction text */}
+      <p className={styles.instructionText}>
+        click or use arrow keys to choose the best team
+      </p>
+
+      {/* Arrow buttons at top, aligned with roster panels */}
+      <div className={styles.buttonContainer}>
+        <ArrowButton direction="left" onClick={() => onSelectWinner(teamA)} />
+        <ArrowButton direction="right" onClick={() => onSelectWinner(teamB)} />
+      </div>
+
       {/* Two-column roster layout */}
       <div className={styles.rosterContainer}>
         <div className={styles.rosterPanel}>
@@ -82,17 +93,6 @@ function ComparisonScreen({
             onViewModeChange={setViewMode}
             showViewToggle={false}
           />
-        </div>
-      </div>
-
-      {/* Selection area */}
-      <div className={styles.selectionArea}>
-        <p className={styles.instructionText}>
-          click or use arrow keys to choose the best team
-        </p>
-        <div className={styles.buttonContainer}>
-          <ArrowButton direction="left" onClick={() => onSelectWinner(teamA)} />
-          <ArrowButton direction="right" onClick={() => onSelectWinner(teamB)} />
         </div>
       </div>
 
