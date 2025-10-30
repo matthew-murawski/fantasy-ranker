@@ -37,7 +37,6 @@ function PlayerCard({
   };
 
   const positionClass = `${styles.positionLabel} ${getPositionClass(position)}`;
-  const cardClass = `${styles.card} ${getPositionClass(position)}`;
 
   // Format the display based on the format prop
   const renderContent = () => {
@@ -65,7 +64,7 @@ function PlayerCard({
   };
 
   return (
-    <div className={cardClass}>
+    <div className={styles.card}>
       {renderContent()}
     </div>
   );
