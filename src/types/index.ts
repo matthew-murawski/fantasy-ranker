@@ -10,6 +10,7 @@ export interface Player {
   rosterSlot: string;
   injuryStatus: string;
   isIR: boolean;
+  percentStarted?: number; // Optional: bench-fill heuristic
 }
 
 export interface Team {
