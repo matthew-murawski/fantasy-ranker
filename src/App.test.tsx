@@ -1,11 +1,59 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
+import { mockLeagueData } from './test-utils';
+
+// Mock the data service
+vi.mock('./services/dataService', async (importOriginal) => {
+  const mod: any = await importOriginal();
+  return {
+    ...mod,
+    loadLeagueData: vi.fn(),
+  };
+});
+
+import { loadLeagueData } from './services/dataService';
 
 describe('App', () => {
-  it('renders Fantasy Football Ranker heading', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('shows loading state initially', () => {
+    (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      new Promise(() => {})
+    );
     render(<App />);
-    const heading = screen.getByRole('heading', { name: /fantasy football ranker/i });
-    expect(heading).toBeInTheDocument();
+    expect(screen.getByText(/loading league data/i)).toBeInTheDocument();
+  });
+
+  it('shows teams when data loads successfully and renders ComparisonFlow', async () => {
+    const teams = mockLeagueData();
+    (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(teams);
+
+    render(<App />);
+
+    // Should render comparison instruction after data load
+    await waitFor(() => {
+      expect(
+        screen.getByText(/click or use arrow keys to choose the best team/i)
+      ).toBeInTheDocument();
+    });
+
+    // Verify loadLeagueData called with 'dub'
+    expect(loadLeagueData).toHaveBeenCalledWith('dub');
+  });
+
+  it('shows error message when loading fails', async () => {
+    (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockRejectedValue(
+      new Error('network fail')
+    );
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/error loading data/i)).toBeInTheDocument();
+      expect(screen.getByText(/network fail/i)).toBeInTheDocument();
+    });
   });
 });

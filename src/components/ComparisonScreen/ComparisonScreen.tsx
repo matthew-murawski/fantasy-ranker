@@ -50,12 +50,14 @@ function ComparisonScreen({
       {/* View toggle buttons - top left */}
       <div className={styles.viewToggle}>
         <button
+          aria-label="Show starters and bench"
           className={viewMode === 'starters' ? styles.toggleActive : styles.toggleInactive}
           onClick={() => setViewMode('starters')}
         >
           Starters/Bench
         </button>
         <button
+          aria-label="Show roster by position"
           className={viewMode === 'position' ? styles.toggleActive : styles.toggleInactive}
           onClick={() => setViewMode('position')}
         >

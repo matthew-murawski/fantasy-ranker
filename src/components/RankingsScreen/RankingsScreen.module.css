@@ -1,0 +1,21 @@
+/* RankingsScreen - Final rankings layout */
+
+.container {
+  background: var(--color-background);
+  min-height: 100vh;
+  padding: var(--spacing-xl);
+}
+
+.header {
+  color: var(--color-text);
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  font-family: sans-serif;
+}
+
+.list {
+  max-width: 800px;
+  margin: 0 auto;
+}

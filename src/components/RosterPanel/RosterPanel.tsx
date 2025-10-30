@@ -27,6 +27,7 @@ function RosterPanel({
       {showViewToggle && (
         <div className={styles.toggleContainer}>
           <button
+            aria-label="Show starters and bench"
             className={viewMode === 'starters' ? styles.buttonActive : styles.buttonInactive}
             onClick={() => viewMode !== 'starters' && onViewModeChange('starters')}
             disabled={viewMode === 'starters'}
@@ -34,6 +35,7 @@ function RosterPanel({
             Starters/Bench
           </button>
           <button
+            aria-label="Show roster by position"
             className={viewMode === 'position' ? styles.buttonActive : styles.buttonInactive}
             onClick={() => viewMode !== 'position' && onViewModeChange('position')}
             disabled={viewMode === 'position'}

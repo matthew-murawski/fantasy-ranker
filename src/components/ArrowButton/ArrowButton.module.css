@@ -3,9 +3,9 @@
 .button {
   width: 80px;
   height: 80px;
-  border-radius: 8px;
-  background: #5E17EB;
-  color: white;
+  border-radius: var(--border-radius);
+  background: var(--color-accent);
+  color: var(--color-text);
   font-size: 48px;
   border: none;
   cursor: pointer;
@@ -16,7 +16,7 @@
 }
 
 .button:hover:not(:disabled) {
-  background: #4D12C2;
+  background: var(--color-accent-hover);
 }
 
 .button:active:not(:disabled) {
@@ -26,4 +26,9 @@
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-text);
+  outline-offset: 2px;
 }

@@ -45,8 +45,8 @@ describe('ComparisonFlow', () => {
     const leftButton = screen.getByRole('button', { name: /select left team/i });
     await user.click(leftButton);
 
-    // Should now show completion message
-    expect(screen.getByText(/ranking complete/i)).toBeTruthy();
+    // Should now show rankings screen
+    expect(screen.getByText('POWER RANKINGS')).toBeInTheDocument();
   });
 
   it('verify screens transition correctly', async () => {
@@ -63,15 +63,15 @@ describe('ComparisonFlow', () => {
     const leftButton = screen.getByRole('button', { name: /select left team/i });
     await user.click(leftButton);
 
-    // Should transition to completion message
-    expect(screen.getByText(/ranking complete/i)).toBeTruthy();
+    // Should transition to rankings screen
+    expect(screen.getByText('POWER RANKINGS')).toBeInTheDocument();
 
     // Progress bar should be gone
     progressBar = container.querySelector('[class*="progressContainer"]');
     expect(progressBar).toBeFalsy();
   });
 
-  it('verify completion message shows', async () => {
+  it('renders RankingsScreen when complete', async () => {
     const user = userEvent.setup();
     const teams = [createMockTeam('Team 1'), createMockTeam('Team 2')];
 
@@ -80,7 +80,7 @@ describe('ComparisonFlow', () => {
     const leftButton = screen.getByRole('button', { name: /select left team/i });
     await user.click(leftButton);
 
-    const completionMessage = screen.getByText(/ranking complete/i);
-    expect(completionMessage).toBeTruthy();
+    const header = screen.getByText('POWER RANKINGS');
+    expect(header).toBeInTheDocument();
   });
 });

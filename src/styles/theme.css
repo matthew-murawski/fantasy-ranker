@@ -1,0 +1,31 @@
+:root {
+  --color-background: #7B2CBF;
+  --color-card: #666666;
+  --color-card-dark: #555555;
+  --color-card-hover: #777777;
+  --color-text: #FFFFFF;
+  --color-text-dim: #CCCCCC;
+  --color-accent: #5E17EB;
+  --color-accent-hover: #4D12C2;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+

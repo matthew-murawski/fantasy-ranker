@@ -6,16 +6,20 @@
 import { Team } from '../../types';
 import { useComparison } from '../../hooks/useComparison';
 import ComparisonScreen from '../ComparisonScreen';
+import RankingsScreen from '../RankingsScreen';
 
 export interface ComparisonFlowProps {
   teams: Team[];
 }
 
 function ComparisonFlow({ teams }: ComparisonFlowProps) {
-  const { currentComparison, progress, isComplete, selectWinner } = useComparison(teams);
+  const { currentComparison, progress, isComplete, selectWinner, finalRanking } = useComparison(teams);
 
   if (isComplete) {
-    return <div>Ranking complete!</div>;
+    if (finalRanking && finalRanking.length > 0) {
+      return <RankingsScreen rankedTeams={finalRanking} />;
+    }
+    return <div>Loading final rankings...</div>;
   }
 
   if (!currentComparison) {

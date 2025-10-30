@@ -6,6 +6,15 @@
 import { Team } from '../types';
 import { parseRosterFile } from './excelParser';
 
+function resolveRosterUrl(leagueName: string): string {
+  if (leagueName === 'dub') {
+    // Use Vite asset URL for the real in-repo data file
+    return new URL('../../data/roster_dub.xlsx', import.meta.url).href;
+  }
+  // Fallback for tests/other leagues; tests mock fetch so path content is irrelevant
+  return `/data/roster_${leagueName}.xlsx`;
+}
+
 /**
  * Loads league data from an Excel file in the public directory.
  *
@@ -16,9 +25,9 @@ import { parseRosterFile } from './excelParser';
 export async function loadLeagueData(leagueName: string): Promise<Team[]> {
   try {
     const fileName = `roster_${leagueName}.xlsx`;
-    const filePath = `/league-data/${fileName}`;
+    const assetUrl = resolveRosterUrl(leagueName);
 
-    const response = await fetch(filePath);
+    const response = await fetch(assetUrl);
 
     if (!response.ok) {
       throw new Error(`File not found: ${fileName} (status: ${response.status})`);
@@ -106,7 +115,7 @@ export function validateRosterData(teams: Team[]): boolean {
 
     // Check for valid roster slots
     for (const player of team.players) {
-      const validSlots = ['QB', 'RB', 'WR', 'TE', 'K', 'D/ST', 'RB/WR/TE', 'BE'];
+      const validSlots = ['QB', 'RB', 'WR', 'TE', 'K', 'D/ST', 'RB/WR/TE', 'BE', 'IR'];
       if (!validSlots.includes(player.rosterSlot)) {
         throw new Error(
           `Validation failed: Team "${team.teamName}" has player "${player.playerName}" with invalid roster slot "${player.rosterSlot}"`

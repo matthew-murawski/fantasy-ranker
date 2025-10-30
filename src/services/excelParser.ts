@@ -67,13 +67,15 @@ export async function parseRosterFile(file: File | ArrayBuffer): Promise<Team[]>
       }
 
       // Create player object
+      const isIR = injuryStatus === 'INJURY_RESERVE' || injuryStatus === 'IR' || rosterSlot === 'IR';
+
       const player: Player = {
         playerName,
         position,
         nflTeam,
         rosterSlot,
         injuryStatus,
-        isIR: injuryStatus === 'INJURY_RESERVE',
+        isIR,
       };
 
       // Add to team map
