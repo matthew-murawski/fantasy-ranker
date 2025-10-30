@@ -1,6 +1,4 @@
 .card {
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 12px var(--spacing-md);
   margin-bottom: 12px;
@@ -10,8 +8,50 @@
   transition: background-color 0.2s ease;
 }
 
-.card:hover {
-  background: var(--color-bg-hover);
+/* Position-specific card colors */
+.card.qb {
+  background: rgba(251, 113, 133, 0.2);
+  border: 1px solid var(--color-qb);
+}
+
+.card.rb {
+  background: rgba(52, 211, 153, 0.2);
+  border: 1px solid var(--color-rb);
+}
+
+.card.wr {
+  background: rgba(96, 165, 250, 0.2);
+  border: 1px solid var(--color-wr);
+}
+
+.card.te {
+  background: rgba(251, 191, 36, 0.2);
+  border: 1px solid var(--color-te);
+}
+
+.card.k {
+  background: rgba(167, 139, 250, 0.2);
+  border: 1px solid var(--color-k);
+}
+
+.card.dst {
+  background: rgba(251, 146, 60, 0.2);
+  border: 1px solid var(--color-dst);
+}
+
+.card.flex {
+  background: rgba(148, 163, 184, 0.2);
+  border: 1px solid var(--color-flex);
+}
+
+.card.bench {
+  background: rgba(107, 114, 128, 0.2);
+  border: 1px solid var(--color-bench);
+}
+
+.card.ir {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid var(--color-ir);
 }
 
 .positionLabel {
@@ -28,57 +68,57 @@
   margin-right: var(--spacing-sm);
 }
 
-/* Position-specific badge colors */
+/* Position-specific badge colors - outline only */
 .positionLabel.qb {
-  background: rgba(251, 113, 133, 0.2);
+  background: transparent;
   border: 1px solid var(--color-qb);
   color: var(--color-qb);
 }
 
 .positionLabel.rb {
-  background: rgba(52, 211, 153, 0.2);
+  background: transparent;
   border: 1px solid var(--color-rb);
   color: var(--color-rb);
 }
 
 .positionLabel.wr {
-  background: rgba(96, 165, 250, 0.2);
+  background: transparent;
   border: 1px solid var(--color-wr);
   color: var(--color-wr);
 }
 
 .positionLabel.te {
-  background: rgba(251, 191, 36, 0.2);
+  background: transparent;
   border: 1px solid var(--color-te);
   color: var(--color-te);
 }
 
 .positionLabel.k {
-  background: rgba(167, 139, 250, 0.2);
+  background: transparent;
   border: 1px solid var(--color-k);
   color: var(--color-k);
 }
 
 .positionLabel.dst {
-  background: rgba(251, 146, 60, 0.2);
+  background: transparent;
   border: 1px solid var(--color-dst);
   color: var(--color-dst);
 }
 
 .positionLabel.flex {
-  background: rgba(148, 163, 184, 0.2);
+  background: transparent;
   border: 1px solid var(--color-flex);
   color: var(--color-flex);
 }
 
 .positionLabel.bench {
-  background: rgba(107, 114, 128, 0.2);
+  background: transparent;
   border: 1px solid var(--color-bench);
   color: var(--color-bench);
 }
 
 .positionLabel.ir {
-  background: rgba(239, 68, 68, 0.2);
+  background: transparent;
   border: 1px solid var(--color-ir);
   color: var(--color-ir);
 }
