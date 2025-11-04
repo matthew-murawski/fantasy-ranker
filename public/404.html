@@ -2,22 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Fantasy Ranker</title>
+  <title>Fantasy Ranker - Not Found</title>
   <script>
-    // GitHub Pages SPA redirect solution
-    // This script stores the attempted path and redirects to index.html
-    // The router will then handle restoring the correct route
-    var path = location.pathname;
-    // Remove trailing slash if present
-    if (path.endsWith('/')) {
-      path = path.slice(0, -1);
-    }
-    sessionStorage.setItem('redirect', path + location.search + location.hash);
-    // Redirect to the base path (index.html)
-    var segments = path.split('/').slice(0, -1);
-    location.replace(segments.join('/') + '/');
+    // Simple redirect to home page for any unknown routes
+    location.replace('/fantasy-ranker/');
   </script>
 </head>
 <body>
+  <p>Redirecting to home page...</p>
 </body>
 </html>
