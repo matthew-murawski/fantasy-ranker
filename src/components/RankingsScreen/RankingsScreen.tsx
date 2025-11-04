@@ -24,6 +24,7 @@ function RankingsScreen({ rankedTeams, leagueName, rankerName, getTeamRecord, on
 
   // Track submission status
   const [submissionStatus, setSubmissionStatus] = useState<'pending' | 'success' | 'error'>('pending');
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   // Submit ranking data to Google Sheets on mount
   useEffect(() => {
@@ -53,13 +54,18 @@ function RankingsScreen({ rankedTeams, leagueName, rankerName, getTeamRecord, on
 
         if (result.success) {
           setSubmissionStatus('success');
+          setSubmissionError(null);
         } else {
           setSubmissionStatus('error');
-          console.error('Submission failed:', result.error);
+          const errorMsg = result.error || 'Unknown error';
+          setSubmissionError(errorMsg);
+          console.error('Submission failed:', errorMsg);
         }
       } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
         console.error('Error submitting rankings:', error);
         setSubmissionStatus('error');
+        setSubmissionError(errorMsg);
       }
     };
 
@@ -90,7 +96,10 @@ function RankingsScreen({ rankedTeams, leagueName, rankerName, getTeamRecord, on
       )}
       {submissionStatus === 'error' && (
         <div className={styles.errorMessage}>
-          There was an issue saving your rankings. You can still see your results below.
+          <div>There was an issue saving your rankings. You can still see your results below.</div>
+          {submissionError && (
+            <div className={styles.errorDetail}>Error details: {submissionError}</div>
+          )}
         </div>
       )}
 
