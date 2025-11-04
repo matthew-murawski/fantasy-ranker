@@ -8,17 +8,30 @@ import userEvent from '@testing-library/user-event';
 import LandingPage from './LandingPage';
 
 describe('LandingPage', () => {
-  it('renders title and start button', () => {
+  it('renders league-specific title and start button', () => {
     const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+    render(<LandingPage leagueName="dub" onLeagueSelect={onLeagueSelect} />);
 
-    expect(screen.getByRole('heading', { name: /fantasy ranker/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /dub fantasy ranker/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /start/i })).toBeInTheDocument();
+  });
+
+  it('renders correct title for each league', () => {
+    const onLeagueSelect = vi.fn();
+
+    const { rerender } = render(<LandingPage leagueName="dub" onLeagueSelect={onLeagueSelect} />);
+    expect(screen.getByRole('heading', { name: /dub fantasy ranker/i })).toBeInTheDocument();
+
+    rerender(<LandingPage leagueName="pitt" onLeagueSelect={onLeagueSelect} />);
+    expect(screen.getByRole('heading', { name: /pitt fantasy ranker/i })).toBeInTheDocument();
+
+    rerender(<LandingPage leagueName="men" onLeagueSelect={onLeagueSelect} />);
+    expect(screen.getByRole('heading', { name: /men fantasy ranker/i })).toBeInTheDocument();
   });
 
   it('renders the instructional description text', () => {
     const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+    render(<LandingPage leagueName="dub" onLeagueSelect={onLeagueSelect} />);
 
     expect(
       screen.getByText(/compare teams head-to-head in a series of matchups/i)
@@ -28,23 +41,20 @@ describe('LandingPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows league selection buttons after clicking START', async () => {
+  it('shows name input after clicking START', async () => {
     const user = userEvent.setup();
     const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+    render(<LandingPage leagueName="dub" onLeagueSelect={onLeagueSelect} />);
 
-    // Initially, league buttons should not be visible
-    expect(screen.queryByText(/choose league/i)).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /dub league/i })).not.toBeInTheDocument();
+    // Initially, name input should not be visible
+    expect(screen.queryByText(/enter your name/i)).not.toBeInTheDocument();
 
     // Click START
     await user.click(screen.getByRole('button', { name: /start/i }));
 
-    // Now league selection should be visible
-    expect(screen.getByText(/choose league/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /dub league/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /pitt league/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /men league/i })).toBeInTheDocument();
+    // Now name input should be visible
+    expect(screen.getByText(/enter your name/i)).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /enter your name/i })).toBeInTheDocument();
 
     // START button should be hidden
     expect(screen.queryByRole('button', { name: /^start$/i })).not.toBeInTheDocument();
@@ -53,16 +63,12 @@ describe('LandingPage', () => {
   it('invokes onLeagueSelect with league and ranker name when completing flow', async () => {
     const user = userEvent.setup();
     const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+    render(<LandingPage leagueName="dub" onLeagueSelect={onLeagueSelect} />);
 
     // Click START
     await user.click(screen.getByRole('button', { name: /start/i }));
 
-    // Select league
-    await user.click(screen.getByRole('button', { name: /dub league/i }));
-
     // Should now see name input
-    expect(screen.getByText(/enter your name/i)).toBeInTheDocument();
     const nameInput = screen.getByRole('textbox', { name: /enter your name/i });
     expect(nameInput).toBeInTheDocument();
 
@@ -80,10 +86,9 @@ describe('LandingPage', () => {
   it('disables continue button when name is less than 2 characters', async () => {
     const user = userEvent.setup();
     const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+    render(<LandingPage leagueName="pitt" onLeagueSelect={onLeagueSelect} />);
 
     await user.click(screen.getByRole('button', { name: /start/i }));
-    await user.click(screen.getByRole('button', { name: /dub league/i }));
 
     const nameInput = screen.getByRole('textbox', { name: /enter your name/i });
     const continueButton = screen.getByRole('button', { name: /continue/i });
@@ -103,15 +108,14 @@ describe('LandingPage', () => {
   it('allows submission via Enter key', async () => {
     const user = userEvent.setup();
     const onLeagueSelect = vi.fn();
-    render(<LandingPage onLeagueSelect={onLeagueSelect} />);
+    render(<LandingPage leagueName="men" onLeagueSelect={onLeagueSelect} />);
 
     await user.click(screen.getByRole('button', { name: /start/i }));
-    await user.click(screen.getByRole('button', { name: /pitt league/i }));
 
     const nameInput = screen.getByRole('textbox', { name: /enter your name/i });
     await user.type(nameInput, 'TestUser{Enter}');
 
     expect(onLeagueSelect).toHaveBeenCalledTimes(1);
-    expect(onLeagueSelect).toHaveBeenCalledWith('pitt', 'TestUser');
+    expect(onLeagueSelect).toHaveBeenCalledWith('men', 'TestUser');
   });
 });

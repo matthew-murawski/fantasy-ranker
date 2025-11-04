@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { mockLeagueData } from './test-utils';
@@ -20,34 +21,53 @@ describe('App', () => {
     vi.clearAllMocks();
   });
 
-  it('shows landing page initially without loading data', () => {
-    render(<App />);
-    expect(screen.getByRole('heading', { name: /fantasy ranker/i })).toBeInTheDocument();
+  it('shows league selection page at root path', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/choose your league/i)).toBeInTheDocument();
+    expect(screen.getByText('Go to Dub League')).toBeInTheDocument();
+    expect(screen.getByText('Go to Pitt League')).toBeInTheDocument();
+    expect(screen.getByText('Go to Men League')).toBeInTheDocument();
+    expect(loadLeagueData).not.toHaveBeenCalled();
+  });
+
+  it('shows league-specific landing page at league route', () => {
+    render(
+      <MemoryRouter initialEntries={['/dub']}>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByRole('heading', { name: /dub fantasy ranker/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /start/i })).toBeInTheDocument();
     expect(loadLeagueData).not.toHaveBeenCalled();
   });
 
-  it('shows league selection after clicking START, then loads data after league selection', async () => {
+  it('redirects to root for invalid league parameter', () => {
+    render(
+      <MemoryRouter initialEntries={['/invalid']}>
+        <App />
+      </MemoryRouter>
+    );
+    // Should redirect to league selection page
+    expect(screen.getByText(/choose your league/i)).toBeInTheDocument();
+  });
+
+  it('loads Dub League data after entering name', async () => {
     const user = userEvent.setup();
     const teams = mockLeagueData();
     (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(teams);
 
-    render(<App />);
+    render(
+      <MemoryRouter initialEntries={['/dub']}>
+        <App />
+      </MemoryRouter>
+    );
 
     // Click START button
     await user.click(screen.getByRole('button', { name: /start/i }));
-
-    // League selection should appear
-    expect(screen.getByText(/choose league/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /dub league/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /pitt league/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /men league/i })).toBeInTheDocument();
-
-    // Data should not be loaded yet
-    expect(loadLeagueData).not.toHaveBeenCalled();
-
-    // Click Dub League button
-    await user.click(screen.getByRole('button', { name: /dub league/i }));
 
     // Should show name input
     const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
@@ -63,15 +83,18 @@ describe('App', () => {
     expect(loadLeagueData).toHaveBeenCalledWith('dub');
   });
 
-  it('loads Pitt League data when Pitt League is selected', async () => {
+  it('loads Pitt League data when at /pitt route', async () => {
     const user = userEvent.setup();
     const teams = mockLeagueData();
     (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(teams);
 
-    render(<App />);
+    render(
+      <MemoryRouter initialEntries={['/pitt']}>
+        <App />
+      </MemoryRouter>
+    );
 
     await user.click(screen.getByRole('button', { name: /start/i }));
-    await user.click(screen.getByRole('button', { name: /pitt league/i }));
 
     const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
     await user.type(nameInput, 'TestUser');
@@ -82,15 +105,18 @@ describe('App', () => {
     });
   });
 
-  it('loads Men League data when Men League is selected', async () => {
+  it('loads Men League data when at /men route', async () => {
     const user = userEvent.setup();
     const teams = mockLeagueData();
     (loadLeagueData as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(teams);
 
-    render(<App />);
+    render(
+      <MemoryRouter initialEntries={['/men']}>
+        <App />
+      </MemoryRouter>
+    );
 
     await user.click(screen.getByRole('button', { name: /start/i }));
-    await user.click(screen.getByRole('button', { name: /men league/i }));
 
     const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
     await user.type(nameInput, 'TestUser');
@@ -107,10 +133,13 @@ describe('App', () => {
       new Error('network fail')
     );
 
-    render(<App />);
+    render(
+      <MemoryRouter initialEntries={['/dub']}>
+        <App />
+      </MemoryRouter>
+    );
 
     await user.click(screen.getByRole('button', { name: /start/i }));
-    await user.click(screen.getByRole('button', { name: /dub league/i }));
 
     const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });
     await user.type(nameInput, 'TestUser');

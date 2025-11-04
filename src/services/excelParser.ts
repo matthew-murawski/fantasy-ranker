@@ -113,14 +113,11 @@ export async function parseRosterFile(file: File | ArrayBuffer): Promise<Team[]>
       let bench = players.filter(p => p.rosterSlot === 'BE' && !p.isIR);
       const ir = players.filter(p => p.isIR);
 
-      // Attempt to auto-fill missing starters using bench players with highest percentStarted,
-      // only if the new Percent Started column is present for this team.
-      const hasPercentStarted = bench.some(b => typeof b.percentStarted === 'number');
-      if (hasPercentStarted) {
-        const filled = fillMissingStartersWithBench(starters, bench);
-        starters = filled.starters;
-        bench = filled.bench;
-      }
+      // Auto-fill missing starters using bench players or EMPTY placeholders.
+      // This ensures every team has exactly 9 starters even if some positions are empty.
+      const filled = fillMissingStartersWithBench(starters, bench);
+      starters = filled.starters;
+      bench = filled.bench;
 
       teams.push({
         teamName,
@@ -194,25 +191,38 @@ function fillMissingStartersWithBench(
   // Attempt to fill each slot up to expected count
   const newStarters: Player[] = [...starters];
 
-  const tryFill = (slot: string, predicate: (p: Player) => boolean) => {
+  const tryFill = (slot: string, predicate: (p: Player) => boolean, positionLabel: string) => {
     const have = currentCounts[slot] || 0;
     const need = (expectedCounts[slot] || 0) - have;
     for (let k = 0; k < need; k++) {
       const candidate = pickBench(predicate);
-      if (!candidate) break;
-      const promoted: Player = { ...candidate, rosterSlot: slot };
-      newStarters.push(promoted);
-      currentCounts[slot] = (currentCounts[slot] || 0) + 1;
+      if (candidate) {
+        const promoted: Player = { ...candidate, rosterSlot: slot };
+        newStarters.push(promoted);
+        currentCounts[slot] = (currentCounts[slot] || 0) + 1;
+      } else {
+        // No suitable player found - add EMPTY placeholder
+        const emptyPlayer: Player = {
+          playerName: 'EMPTY',
+          position: positionLabel,
+          nflTeam: '',
+          rosterSlot: slot,
+          injuryStatus: '',
+          isIR: false,
+        };
+        newStarters.push(emptyPlayer);
+        currentCounts[slot] = (currentCounts[slot] || 0) + 1;
+      }
     }
   };
 
-  tryFill('QB', p => p.position === 'QB');
-  tryFill('RB', p => p.position === 'RB');
-  tryFill('WR', p => p.position === 'WR');
-  tryFill('TE', p => p.position === 'TE');
-  tryFill('K', p => p.position === 'K');
-  tryFill('D/ST', p => p.position === 'D/ST');
-  tryFill('RB/WR/TE', p => p.position === 'RB' || p.position === 'WR' || p.position === 'TE');
+  tryFill('QB', p => p.position === 'QB', 'QB');
+  tryFill('RB', p => p.position === 'RB', 'RB');
+  tryFill('WR', p => p.position === 'WR', 'WR');
+  tryFill('TE', p => p.position === 'TE', 'TE');
+  tryFill('K', p => p.position === 'K', 'K');
+  tryFill('D/ST', p => p.position === 'D/ST', 'D/ST');
+  tryFill('RB/WR/TE', p => p.position === 'RB' || p.position === 'WR' || p.position === 'TE', 'FLEX');
 
   return { starters: newStarters, bench };
 }

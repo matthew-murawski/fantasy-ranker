@@ -86,13 +86,24 @@ describe('excelParser', () => {
       const teams = await parseRosterFile(buffer);
 
       const team = teams[0];
-      expect(team.starters).toHaveLength(2);
-      expect(team.bench).toHaveLength(2);
+      // Auto-fill ensures exactly 9 starters
+      // Original: 2 starters (QB, RB)
+      // Auto-filled from bench: 2 (Bench WR→WR, Bench RB→FLEX)
+      // EMPTY placeholders: 5 (for remaining positions)
+      expect(team.starters).toHaveLength(9);
+      expect(team.bench).toHaveLength(0); // Both bench players promoted to fill missing positions
       expect(team.ir).toHaveLength(2);
 
+      // Verify original starters
       expect(team.starters.some(p => p.playerName === 'Starter QB')).toBe(true);
-      expect(team.bench.some(p => p.playerName === 'Bench WR')).toBe(true);
+      expect(team.starters.some(p => p.playerName === 'Starter RB')).toBe(true);
+      // Verify bench players were promoted
+      expect(team.starters.some(p => p.playerName === 'Bench WR')).toBe(true);
+      expect(team.starters.some(p => p.playerName === 'Bench RB')).toBe(true);
+      // Verify IR players stayed in IR
       expect(team.ir.some(p => p.playerName === 'IR Player 1')).toBe(true);
+      // Check that EMPTY placeholders were added for remaining positions
+      expect(team.starters.filter(p => p.playerName === 'EMPTY').length).toBe(5);
     });
 
     it('handles empty cells gracefully', async () => {

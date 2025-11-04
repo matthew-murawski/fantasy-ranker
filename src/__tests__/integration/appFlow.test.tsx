@@ -5,6 +5,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../../App';
 import { setupMockFetch } from '../../test-utils';
@@ -16,16 +17,16 @@ describe('App Integration Flow', () => {
     // Mock only fetch to return a valid roster Excel buffer
     setupMockFetch(true);
 
-    const { container } = render(<App />);
+    const { container } = render(
+      <MemoryRouter initialEntries={['/dub']}>
+        <App />
+      </MemoryRouter>
+    );
 
-    // Wait for landing page, then start
-    await screen.findByRole('heading', { name: /fantasy ranker/i });
+    // Wait for league-specific landing page, then start
+    await screen.findByRole('heading', { name: /dub fantasy ranker/i });
     const startButton = await screen.findByRole('button', { name: /start/i });
     await user.click(startButton);
-
-    // Select a league
-    const dubLeagueButton = await screen.findByRole('button', { name: /dub league/i });
-    await user.click(dubLeagueButton);
 
     // Enter name
     const nameInput = await screen.findByRole('textbox', { name: /enter your name/i });

@@ -38,6 +38,9 @@ function PlayerCard({
 
   const positionClass = `${styles.positionLabel} ${getPositionClass(position)}`;
 
+  // Check if this is an empty placeholder
+  const isEmpty = playerName === 'EMPTY';
+
   // Format the display based on the format prop
   const renderContent = () => {
     if (displayFormat === 'starter') {
@@ -46,7 +49,7 @@ function PlayerCard({
         <>
           {showPosition && <span className={positionClass}>{position}</span>}
           <span className={styles.playerName}>{playerName}</span>
-          <span className={styles.teamInfo}>({nflTeam})</span>
+          {!isEmpty && nflTeam && <span className={styles.teamInfo}>({nflTeam})</span>}
           {showIRIndicator && isIR && <span className={styles.irIndicator}> (IR)</span>}
         </>
       );
@@ -56,7 +59,7 @@ function PlayerCard({
         <>
           {showPosition && <span className={positionClass}>{position} </span>}
           <span className={styles.playerName}>{playerName}</span>
-          <span className={styles.teamInfo}>({nflTeam})</span>
+          {!isEmpty && nflTeam && <span className={styles.teamInfo}>({nflTeam})</span>}
           {showIRIndicator && isIR && <span className={styles.irIndicator}> (IR)</span>}
         </>
       );
